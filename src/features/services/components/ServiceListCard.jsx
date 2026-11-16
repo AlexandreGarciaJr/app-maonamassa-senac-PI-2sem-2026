@@ -16,7 +16,7 @@ export function ServiceListCard({ service }) {
       className="group rounded-card shadow-card hover:border-primary-light hover:shadow-coral-lg block border-2 border-transparent bg-white p-4 transition-[transform,box-shadow,border-color] duration-300 ease-(--ease-out-expo) hover:-translate-y-0.5 active:scale-[0.98]"
     >
       <div className="flex items-start gap-3">
-        <span className="bg-primary-light text-primary mt-0.5 rounded-full px-2.5 py-[3px] text-[10px] font-semibold tracking-[0.5px] whitespace-nowrap uppercase">
+        <span className="bg-primary-light text-primary-ink mt-0.5 rounded-full px-2.5 py-[3px] text-[10px] font-semibold tracking-[0.5px] whitespace-nowrap uppercase">
           <span aria-hidden>{category?.emoji}</span> {category?.area}
         </span>
         {provider?.gender === 'feminino' && (
@@ -26,7 +26,7 @@ export function ServiceListCard({ service }) {
         )}
       </div>
 
-      <p className="group-hover:text-primary mt-2.5 text-[15px] font-semibold transition-colors">
+      <p className="group-hover:text-primary-ink mt-2.5 text-[15px] font-semibold transition-colors">
         {service.title}
       </p>
       <p className="text-muted mt-1 line-clamp-2 text-xs leading-relaxed">{service.description}</p>
@@ -45,7 +45,7 @@ export function ServiceListCard({ service }) {
 
       <div className="border-line mt-3 flex items-end justify-between border-t pt-3">
         <p>
-          <span className="text-primary text-[17px] font-bold">
+          <span className="text-primary-ink text-[17px] font-bold">
             {formatCurrency(service.price)}
           </span>{' '}
           <span className="text-muted text-[11px]">{PRICE_UNITS[service.priceUnit]}</span>

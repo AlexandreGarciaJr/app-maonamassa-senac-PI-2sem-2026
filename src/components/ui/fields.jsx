@@ -49,7 +49,7 @@ export function PasswordField({ label = 'Senha', ...props }) {
       <button
         type="button"
         onClick={() => setVisible((value) => !value)}
-        className="text-muted hover:text-primary absolute top-[26px] right-1 grid size-11 place-items-center rounded-full transition-colors"
+        className="text-muted hover:text-primary-ink absolute top-[26px] right-1 grid size-11 place-items-center rounded-full transition-colors"
         aria-label={visible ? 'Ocultar senha' : 'Mostrar senha'}
         aria-pressed={visible}
       >

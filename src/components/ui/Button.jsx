@@ -5,7 +5,7 @@ const VARIANTS = {
   primary:
     'bg-primary text-white shadow-button hover:bg-primary-dark hover:-translate-y-0.5 hover:shadow-button-hover disabled:opacity-60 disabled:hover:translate-y-0',
   outline:
-    'border-2 border-primary text-primary bg-transparent hover:bg-primary-light hover:-translate-y-0.5',
+    'border-2 border-primary text-primary-ink bg-transparent hover:bg-primary-light hover:-translate-y-0.5',
   ghost: 'bg-line text-muted hover:bg-[#dedeea] hover:text-ink',
   light: 'bg-white/20 text-white border border-white/40 hover:bg-white/35',
   danger:

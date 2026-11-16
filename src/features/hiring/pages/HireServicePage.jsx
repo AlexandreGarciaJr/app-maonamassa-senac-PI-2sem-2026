@@ -37,7 +37,7 @@ function Step({ number, title, children }) {
         id={`step-${number}`}
         className="mb-4 flex items-center gap-2.5 text-[15px] font-semibold"
       >
-        <span className="bg-primary-light text-primary grid size-7 place-items-center rounded-full text-xs font-bold">
+        <span className="bg-primary-light text-primary-ink grid size-7 place-items-center rounded-full text-xs font-bold">
           {number}
         </span>
         {title}
@@ -131,7 +131,9 @@ export default function HireServicePage() {
             <p className="text-muted text-xs">{service.provider.name}</p>
           </div>
           <div className="text-right">
-            <p className="text-primary text-[15px] font-bold">{formatCurrency(service.price)}</p>
+            <p className="text-primary-ink text-[15px] font-bold">
+              {formatCurrency(service.price)}
+            </p>
             <p className="text-muted text-[10px]">{PRICE_UNITS[service.priceUnit]}</p>
           </div>
         </div>

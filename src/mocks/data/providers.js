@@ -1,4 +1,7 @@
-/** Prestadores de exemplo (dados fictícios). */
+/**
+ * Prestadores de exemplo (fictícios), só para visualização.
+ * Saem quando o backend e o banco de dados entrarem.
+ */
 export const PROVIDERS = [
   {
     id: 'p1',
@@ -12,7 +15,7 @@ export const PROVIDERS = [
     city: 'São Paulo',
     distanceKm: 1.2,
     memberSince: '2024-03-10',
-    bio: 'Eletricista residencial e predial há 12 anos. Trabalho com segurança, organização e garantia em todos os serviços.',
+    bio: 'Eletricista residencial e predial há 12 anos. Trabalho com segurança e garantia.',
   },
   {
     id: 'p2',
@@ -26,7 +29,7 @@ export const PROVIDERS = [
     city: 'São Paulo',
     distanceKm: 2.8,
     memberSince: '2024-06-02',
-    bio: 'Encanadora com foco em atendimento rápido para vazamentos e desentupimentos. Atendo preferencialmente mulheres.',
+    bio: 'Encanadora com atendimento rápido para vazamentos e desentupimentos.',
   },
   {
     id: 'p3',
@@ -40,38 +43,10 @@ export const PROVIDERS = [
     city: 'São Paulo',
     distanceKm: 3.5,
     memberSince: '2025-01-15',
-    bio: 'Reparos gerais e montagem de móveis com capricho. Levo todas as ferramentas e deixo tudo limpo.',
+    bio: 'Reparos gerais e montagem de móveis. Levo as ferramentas e deixo tudo limpo.',
   },
   {
     id: 'p4',
-    name: 'Carlos Mendes',
-    gender: 'masculino',
-    specialties: ['pintura'],
-    verified: true,
-    rating: 4.6,
-    jobsDone: 210,
-    neighborhood: 'Brooklin',
-    city: 'São Paulo',
-    distanceKm: 4.1,
-    memberSince: '2023-11-20',
-    bio: 'Pintor profissional, trabalho com texturas, grafiato e pintura de fachadas.',
-  },
-  {
-    id: 'p5',
-    name: 'Márcia Lima',
-    gender: 'feminino',
-    specialties: ['limpeza'],
-    verified: true,
-    rating: 4.9,
-    jobsDone: 305,
-    neighborhood: 'Chácara Santo Antônio',
-    city: 'São Paulo',
-    distanceKm: 1.9,
-    memberSince: '2023-08-05',
-    bio: 'Diarista há 15 anos, com referências. Limpeza residencial e pós-obra.',
-  },
-  {
-    id: 'p6',
     name: 'Roberto Alves',
     gender: 'masculino',
     specialties: ['alvenaria'],
@@ -83,33 +58,5 @@ export const PROVIDERS = [
     distanceKm: 6.3,
     memberSince: '2025-07-01',
     bio: 'Pedreiro para pequenas reformas, pisos e acabamentos.',
-  },
-  {
-    id: 'p7',
-    name: 'Fernanda Rocha',
-    gender: 'feminino',
-    specialties: ['eletrica'],
-    verified: true,
-    rating: 4.7,
-    jobsDone: 58,
-    neighborhood: 'Vila Mascote',
-    city: 'São Paulo',
-    distanceKm: 2.2,
-    memberSince: '2025-02-18',
-    bio: 'Eletricista formada pelo Senai. Instalações, reparos e revisões elétricas.',
-  },
-  {
-    id: 'p8',
-    name: 'Lucas Ferreira',
-    gender: 'masculino',
-    specialties: ['jardinagem'],
-    verified: true,
-    rating: 4.5,
-    jobsDone: 76,
-    neighborhood: 'Interlagos',
-    city: 'São Paulo',
-    distanceKm: 7.4,
-    memberSince: '2024-09-12',
-    bio: 'Jardinagem e paisagismo para casas e condomínios.',
   },
 ]

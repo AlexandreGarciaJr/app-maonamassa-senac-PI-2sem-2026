@@ -74,7 +74,7 @@ function HomeHeader({ search, onSearchChange }) {
           className="text-ink placeholder:text-muted shadow-search w-full rounded-full bg-white py-[13px] pr-12 pl-[18px] text-sm transition-shadow duration-300 outline-none focus:shadow-[0_8px_28px_rgb(0_0_0/0.18)] [&::-webkit-search-cancel-button]:hidden"
         />
         <Search
-          className="text-primary pointer-events-none absolute top-1/2 right-4 size-[18px] -translate-y-1/2"
+          className="text-primary-ink pointer-events-none absolute top-1/2 right-4 size-[18px] -translate-y-1/2"
           aria-hidden
         />
       </div>
@@ -91,8 +91,8 @@ function FilterChip({ active, onClick, children }) {
       className={cn(
         'rounded-full border-2 px-4 py-2 text-[13px] font-medium whitespace-nowrap transition-all duration-200 active:scale-95',
         active
-          ? 'border-primary bg-primary-light text-primary'
-          : 'border-line text-muted hover:border-primary hover:text-primary bg-white',
+          ? 'border-primary bg-primary-light text-primary-ink'
+          : 'border-line text-muted hover:border-primary hover:text-primary-ink bg-white',
       )}
     >
       {children}
@@ -148,7 +148,7 @@ export default function HomePage() {
               <span className="text-muted">Ofereça um novo serviço</span>
             </span>
             <span
-              className="text-primary text-lg transition-transform group-hover:translate-x-1"
+              className="text-primary-ink text-lg transition-transform group-hover:translate-x-1"
               aria-hidden
             >
               →
@@ -164,7 +164,7 @@ export default function HomePage() {
             <button
               type="button"
               onClick={() => setShowAllCategories((value) => !value)}
-              className="text-primary text-[13px] font-medium hover:underline"
+              className="text-primary-ink text-[13px] font-medium hover:underline"
               aria-expanded={showAllCategories}
             >
               {showAllCategories ? 'Mostrar menos' : 'Mostrar todos'}
@@ -180,7 +180,7 @@ export default function HomePage() {
             </h2>
             <Link
               to={category ? `${ROUTES.services}?categoria=${category}` : ROUTES.services}
-              className="text-primary text-[13px] font-medium hover:underline"
+              className="text-primary-ink text-[13px] font-medium hover:underline"
             >
               Ver todos
             </Link>

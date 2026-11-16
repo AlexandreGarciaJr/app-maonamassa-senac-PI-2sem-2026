@@ -87,7 +87,13 @@ export default function ServiceDetailPage() {
   if (isPending) {
     return (
       <>
-        <CurvedHeader title="Carregando..." backTo={ROUTES.home} className="pb-16" />
+        {/* Mesma altura mínima do cabeçalho final, para não deslocar a tela (BUG-007). */}
+        <CurvedHeader
+          emoji="⏳"
+          title="Carregando..."
+          backTo={ROUTES.home}
+          className="min-h-[300px] pb-16"
+        />
         <div className="space-y-4 px-5 pt-8">
           <Skeleton className="h-20" />
           <Skeleton className="h-32" />
@@ -118,7 +124,7 @@ export default function ServiceDetailPage() {
 
   return (
     <>
-      <header className="curved-header px-5 pt-10 pb-16 text-center">
+      <header className="curved-header min-h-[300px] px-5 pt-10 pb-16 text-center">
         <div className="mb-3 text-left">
           <BackPill fallback={ROUTES.home} />
         </div>
@@ -138,7 +144,7 @@ export default function ServiceDetailPage() {
         <div className="rounded-card shadow-card flex items-center justify-between bg-white p-[18px]">
           <div>
             <p className="text-muted text-xs font-medium">Valor {PRICE_UNITS[service.priceUnit]}</p>
-            <p className="text-primary text-2xl font-bold">{formatCurrency(service.price)}</p>
+            <p className="text-primary-ink text-2xl font-bold">{formatCurrency(service.price)}</p>
           </div>
           <span className="text-[32px]" aria-hidden>
             💰

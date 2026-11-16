@@ -84,11 +84,11 @@ export function TermsLabel() {
   return (
     <>
       Li e aceito os {/* TODO: páginas de termos e privacidade */}
-      <a href="#termos" className="text-primary font-semibold underline">
+      <a href="#termos" className="text-primary-ink font-semibold underline">
         Termos de Uso
       </a>{' '}
       e a{' '}
-      <a href="#privacidade" className="text-primary font-semibold underline">
+      <a href="#privacidade" className="text-primary-ink font-semibold underline">
         Política de Privacidade
       </a>{' '}
       (LGPD).

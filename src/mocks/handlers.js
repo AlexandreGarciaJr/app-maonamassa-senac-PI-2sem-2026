@@ -47,11 +47,15 @@ export const authMock = {
     if (users.find((item) => item.email.toLowerCase() === data.email.toLowerCase())) {
       throw badRequest('Já existe uma conta com este e-mail.')
     }
+    if (data.cpf && users.find((item) => item.cpf === data.cpf)) {
+      throw badRequest('Já existe uma conta com este CPF.')
+    }
     const user = users.insert({
       id: newId(role === 'prestador' ? 'p' : 'u'),
       role,
       name: data.name,
       email: data.email,
+      cpf: data.cpf,
       phone: data.phone,
       gender: data.gender,
       preferWomen: Boolean(data.preferWomen),
@@ -183,10 +187,13 @@ export const hiringMock = {
     })
   },
 
-  async getById(requestId) {
+  /** Só o cliente dono e o prestador do serviço podem ver (outro usuário recebe 404). */
+  async getById(requestId, { userId } = {}) {
     await delay(300)
     const request = hireRequests.find((item) => item.id === requestId)
-    if (!request) throw notFound('Solicitação não encontrada.')
-    return withService(request)
+    const result = request && withService(request)
+    const canSee = result && (result.clientId === userId || result.service?.providerId === userId)
+    if (!canSee) throw notFound('Solicitação não encontrada.')
+    return result
   },
 }

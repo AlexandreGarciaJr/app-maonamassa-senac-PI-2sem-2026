@@ -84,7 +84,7 @@ export default function HireSuccessPage() {
           <ol className="space-y-2.5">
             {NEXT_STEPS.map((step, index) => (
               <li key={step} className="flex gap-3 text-[13px]">
-                <span className="bg-primary-light text-primary grid size-6 shrink-0 place-items-center rounded-full text-[11px] font-bold">
+                <span className="bg-primary-light text-primary-ink grid size-6 shrink-0 place-items-center rounded-full text-[11px] font-bold">
                   {index + 1}
                 </span>
                 {step}
@@ -100,7 +100,7 @@ export default function HireSuccessPage() {
         </Button>
         <Link
           to={ROUTES.home}
-          className="text-primary block text-center text-[13px] font-medium hover:underline"
+          className="text-primary-ink block text-center text-[13px] font-medium hover:underline"
         >
           Ver outros serviços
         </Link>

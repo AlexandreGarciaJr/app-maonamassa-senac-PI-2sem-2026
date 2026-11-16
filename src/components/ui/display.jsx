@@ -16,7 +16,7 @@ export function Card({ as: Component = 'div', title, className, children, ...pro
 }
 
 const BADGE_VARIANTS = {
-  primary: 'bg-primary-light text-primary',
+  primary: 'bg-primary-light text-primary-ink',
   success: 'bg-[#e8f5e9] text-[#2e7d32]',
   neutral: 'bg-line text-muted',
   violet: 'bg-[#f1ebff] text-[#6b3fd4]',
@@ -68,7 +68,7 @@ export function Spinner({ label = 'Carregando...', className }) {
       role="status"
       className={cn('text-muted flex items-center justify-center gap-2 p-8 text-sm', className)}
     >
-      <LoaderCircle className="text-primary size-5 animate-spin" aria-hidden />
+      <LoaderCircle className="text-primary-ink size-5 animate-spin" aria-hidden />
       {label}
     </div>
   )

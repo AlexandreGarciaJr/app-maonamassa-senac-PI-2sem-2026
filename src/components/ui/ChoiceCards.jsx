@@ -32,8 +32,8 @@ export function ChoiceCards({
               className={cn(
                 'rounded-field border-line text-muted flex h-full flex-col items-center justify-center gap-1 border-2 bg-white px-2.5 py-3.5 text-center',
                 'transition-[border-color,background-color,color,transform] duration-200 ease-(--ease-out-expo)',
-                'group-hover:border-primary group-hover:text-primary group-active:scale-[0.97]',
-                'peer-checked:border-primary peer-checked:bg-primary-light peer-checked:text-primary',
+                'group-hover:border-primary group-hover:text-primary-ink group-active:scale-[0.97]',
+                'peer-checked:border-primary peer-checked:bg-primary-light peer-checked:text-primary-ink',
                 'peer-focus-visible:shadow-[0_0_0_4px_rgb(232_93_93/0.18)]',
               )}
             >

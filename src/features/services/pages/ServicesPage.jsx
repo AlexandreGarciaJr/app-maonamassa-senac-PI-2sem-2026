@@ -23,8 +23,8 @@ function Chip({ active, onClick, children }) {
       className={cn(
         'shrink-0 rounded-full border-2 px-4 py-2 text-[13px] font-medium whitespace-nowrap transition-all duration-200 active:scale-95',
         active
-          ? 'border-primary bg-primary-light text-primary'
-          : 'border-line text-muted hover:border-primary hover:text-primary bg-white',
+          ? 'border-primary bg-primary-light text-primary-ink'
+          : 'border-line text-muted hover:border-primary hover:text-primary-ink bg-white',
       )}
     >
       {children}
@@ -93,7 +93,7 @@ export default function ServicesPage() {
             className="text-ink placeholder:text-muted shadow-search w-full rounded-full bg-white py-[13px] pr-12 pl-[18px] text-sm transition-shadow duration-300 outline-none focus:shadow-[0_8px_28px_rgb(0_0_0/0.18)] [&::-webkit-search-cancel-button]:hidden"
           />
           <Search
-            className="text-primary pointer-events-none absolute top-1/2 right-4 size-[18px] -translate-y-1/2"
+            className="text-primary-ink pointer-events-none absolute top-1/2 right-4 size-[18px] -translate-y-1/2"
             aria-hidden
           />
         </div>
@@ -145,7 +145,7 @@ export default function ServicesPage() {
               onChange={(event) =>
                 updateParam('ordem', event.target.value === 'rating' ? '' : event.target.value)
               }
-              className="text-primary cursor-pointer bg-transparent font-semibold outline-none"
+              className="text-primary-ink cursor-pointer bg-transparent font-semibold outline-none"
             >
               {SORT_OPTIONS.map((option) => (
                 <option key={option.value} value={option.value}>

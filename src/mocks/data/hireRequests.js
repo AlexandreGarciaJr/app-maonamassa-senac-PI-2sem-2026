@@ -1,15 +1,7 @@
 /**
- * Solicitações de exemplo (dados fictícios), para a Agenda não ficar vazia na demonstração.
+ * Solicitações de exemplo (fictícias), só para a Agenda não ficar vazia na demonstração.
  * u1 = cliente de demonstração; p1 = prestador de demonstração (dono dos serviços s1 e s2).
  */
-const address = {
-  cep: '04696-000',
-  street: 'Av. Eng. Eusébio Stevaux',
-  number: '823',
-  complement: 'Apto 42',
-  neighborhood: 'Santo Amaro',
-}
-
 export const HIRE_REQUESTS = [
   {
     id: 'OS-100231',
@@ -19,27 +11,17 @@ export const HIRE_REQUESTS = [
     status: 'confirmado',
     date: '2026-11-22',
     period: 'tarde',
+    cep: '04696-000',
+    street: 'Av. Eng. Eusébio Stevaux',
+    number: '823',
+    complement: 'Apto 42',
+    neighborhood: 'Santo Amaro',
     details: 'Vazamento embaixo da pia da cozinha.',
     paymentMethod: 'pix',
     estimatedPrice: 150,
     emergencyName: 'Ana (irmã)',
     emergencyPhone: '(11) 97777-1234',
     createdAt: '2026-11-14T10:20:00.000Z',
-    ...address,
-  },
-  {
-    id: 'OS-100198',
-    serviceId: 's1',
-    clientId: 'u1',
-    clientName: 'Mariana Oliveira',
-    status: 'aguardando_prestador',
-    date: '2026-11-28',
-    period: 'manha',
-    details: 'Trocar 4 tomadas da sala para o padrão novo.',
-    paymentMethod: 'cartao',
-    estimatedPrice: 180,
-    createdAt: '2026-11-15T09:05:00.000Z',
-    ...address,
   },
   {
     id: 'OS-100240',
@@ -49,27 +31,30 @@ export const HIRE_REQUESTS = [
     status: 'aguardando_prestador',
     date: '2026-11-25',
     period: 'manha',
-    details: 'O disjuntor do chuveiro desarma toda hora.',
-    paymentMethod: 'pix',
-    estimatedPrice: 250,
-    createdAt: '2026-11-15T18:40:00.000Z',
     cep: '04571-010',
     street: 'Rua Flórida',
     number: '1200',
     neighborhood: 'Brooklin',
+    details: 'O disjuntor do chuveiro desarma toda hora.',
+    paymentMethod: 'pix',
+    estimatedPrice: 250,
+    createdAt: '2026-11-15T18:40:00.000Z',
   },
   {
     id: 'OS-099870',
-    serviceId: 's8',
+    serviceId: 's4',
     clientId: 'u1',
     clientName: 'Mariana Oliveira',
     status: 'concluido',
     date: '2026-10-30',
     period: 'manha',
-    details: 'Faxina completa do apartamento.',
+    cep: '04696-000',
+    street: 'Av. Eng. Eusébio Stevaux',
+    number: '823',
+    neighborhood: 'Santo Amaro',
+    details: 'Montar o guarda-roupa do quarto.',
     paymentMethod: 'pix',
-    estimatedPrice: 200,
+    estimatedPrice: 90,
     createdAt: '2026-10-25T14:00:00.000Z',
-    ...address,
   },
 ]

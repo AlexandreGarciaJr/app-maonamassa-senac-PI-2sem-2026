@@ -1,4 +1,4 @@
-/** Avaliações de exemplo (dados fictícios), ligadas ao prestador. */
+/** Avaliações de exemplo (fictícias), só para visualização. */
 export const REVIEWS = [
   {
     id: 'r1',
@@ -10,22 +10,6 @@ export const REVIEWS = [
   },
   {
     id: 'r2',
-    providerId: 'p1',
-    authorName: 'Ricardo T.',
-    rating: 5,
-    comment: 'Resolveu um curto que outro eletricista não achou.',
-    date: '2026-09-17',
-  },
-  {
-    id: 'r3',
-    providerId: 'p1',
-    authorName: 'Sônia A.',
-    rating: 4,
-    comment: 'Ótimo serviço, só atrasou uns 15 minutos.',
-    date: '2026-08-03',
-  },
-  {
-    id: 'r4',
     providerId: 'p2',
     authorName: 'Beatriz C.',
     rating: 5,
@@ -33,15 +17,7 @@ export const REVIEWS = [
     date: '2026-10-30',
   },
   {
-    id: 'r5',
-    providerId: 'p2',
-    authorName: 'Paula R.',
-    rating: 5,
-    comment: 'Chegou rápido e resolveu o vazamento na hora.',
-    date: '2026-09-09',
-  },
-  {
-    id: 'r6',
+    id: 'r3',
     providerId: 'p3',
     authorName: 'Camila F.',
     rating: 5,
@@ -49,35 +25,11 @@ export const REVIEWS = [
     date: '2026-10-12',
   },
   {
-    id: 'r7',
+    id: 'r4',
     providerId: 'p4',
     authorName: 'Eduardo M.',
     rating: 4,
-    comment: 'Pintura muito bem feita, recomendo.',
+    comment: 'Piso ficou bem nivelado, recomendo.',
     date: '2026-07-22',
-  },
-  {
-    id: 'r8',
-    providerId: 'p5',
-    authorName: 'Helena S.',
-    rating: 5,
-    comment: 'Casa impecável. Já agendei de novo para o mês que vem.',
-    date: '2026-11-02',
-  },
-  {
-    id: 'r9',
-    providerId: 'p7',
-    authorName: 'Larissa P.',
-    rating: 5,
-    comment: 'Muito cuidadosa e organizada. Recomendo demais.',
-    date: '2026-10-19',
-  },
-  {
-    id: 'r10',
-    providerId: 'p8',
-    authorName: 'Jorge D.',
-    rating: 4,
-    comment: 'Jardim ficou lindo, voltarei a contratar.',
-    date: '2026-09-25',
   },
 ]

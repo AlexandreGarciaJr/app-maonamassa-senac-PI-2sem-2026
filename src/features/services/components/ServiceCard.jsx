@@ -20,7 +20,7 @@ export function ServiceCard({ service }) {
       />
 
       <div className="min-w-0 flex-1">
-        <p className="text-ink group-hover:text-primary truncate text-[15px] font-semibold transition-colors">
+        <p className="text-ink group-hover:text-primary-ink truncate text-[15px] font-semibold transition-colors">
           {service.title}
         </p>
         <p className="text-muted mb-1 flex items-center gap-1 truncate text-xs">
@@ -46,7 +46,7 @@ export function ServiceCard({ service }) {
       </div>
 
       <div className="shrink-0 text-right">
-        <p className="text-primary text-[15px] font-bold whitespace-nowrap">
+        <p className="text-primary-ink text-[15px] font-bold whitespace-nowrap">
           {formatCurrency(service.price)}
         </p>
         <p className="text-muted text-[10px]">{PRICE_UNITS[service.priceUnit]}</p>

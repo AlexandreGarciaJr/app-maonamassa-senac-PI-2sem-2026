@@ -10,12 +10,14 @@
   --color-primary: #e85d5d;
   --color-primary-dark: #c94848;
   --color-primary-light: #fdeaea;
+  /* Coral escurecido só para texto pequeno: contraste AA (4,5:1) no branco e no rosa claro. */
+  --color-primary-ink: #b03a3a;
   --color-ink: #1a1a2e;
-  --color-muted: #888899;
+  --color-muted: #6b6b7e;
   --color-line: #e8e8f0;
   --color-canvas: #f5f5f8;
   --color-desk: #dadae8;
-  --color-star: #f5a623;
+  --color-star: #9a5b00; /* âmbar escuro: contraste AA para o número da nota */
 
   --radius-card: 14px;
   --radius-field: 8px;
@@ -38,6 +40,8 @@
 
   body {
     @apply bg-canvas text-ink font-sans antialiased;
+    /* Textos digitados pelos usuários (títulos, nomes, endereços) nunca estouram a tela (BUG-002). */
+    overflow-wrap: anywhere;
   }
 
   /* App 100% mobile: em telas maiores que um celular, fica centralizado em 480px. */

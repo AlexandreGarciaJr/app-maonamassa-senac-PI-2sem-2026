@@ -27,10 +27,11 @@ export function useCreateHireRequest() {
 }
 
 export function useHireRequest(requestId) {
+  const { user } = useAuth()
   return useQuery({
     queryKey: hiringKeys.detail(requestId),
-    queryFn: () => hiringApi.getById(requestId),
-    enabled: Boolean(requestId),
+    queryFn: () => hiringApi.getById(requestId, { userId: user?.id }),
+    enabled: Boolean(requestId && user),
   })
 }
 

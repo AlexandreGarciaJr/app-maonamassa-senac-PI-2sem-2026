@@ -14,6 +14,13 @@ describe('máscaras', () => {
     expect(maskPhone('11987654321')).toBe('(11) 98765-4321')
   })
 
+  it('descarta o +55 colado ou digitado (BUG-006)', () => {
+    expect(maskPhone('+55 11 98765-4321')).toBe('(11) 98765-4321')
+    // digitando: no 12º dígito o 55 é descartado e o número se completa
+    const digitado = maskPhone(maskPhone('551198765432') + '1')
+    expect(digitado).toBe('(11) 98765-4321')
+  })
+
   it('formata CEP', () => {
     expect(maskCep('04696000')).toBe('04696-000')
   })

@@ -9,3 +9,7 @@ dist
 *.log
 coverage
 .claude/
+
+# Gerados pelos testes E2E (recriados a cada execução)
+qa/playwright-report/
+qa/test-results/

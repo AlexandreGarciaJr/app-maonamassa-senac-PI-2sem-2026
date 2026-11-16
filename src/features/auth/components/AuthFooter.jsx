@@ -16,7 +16,7 @@ export function AuthFooter({ question, linkLabel, linkTo }) {
       </Button>
       <p className="text-muted mt-5 text-center text-[13px]">
         {question}{' '}
-        <Link to={linkTo} className="text-primary font-semibold hover:underline">
+        <Link to={linkTo} className="text-primary-ink font-semibold hover:underline">
           {linkLabel}
         </Link>
       </p>

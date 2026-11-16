@@ -9,7 +9,10 @@ export function maskCpf(value) {
 }
 
 export function maskPhone(value) {
-  const digits = onlyDigits(value).slice(0, 11)
+  let digits = onlyDigits(value)
+  // Código do país (+55) colado ou digitado: descarta para não virar DDD.
+  if (digits.length > 11 && digits.startsWith('55')) digits = digits.slice(2)
+  digits = digits.slice(0, 11)
   if (digits.length === 0) return ''
   if (digits.length <= 2) return `(${digits}`
   if (digits.length <= 6) return digits.replace(/(\d{2})(\d+)/, '($1) $2')

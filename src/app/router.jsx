@@ -4,6 +4,7 @@ import { RootLayout } from '@/components/layout/RootLayout'
 import { Spinner } from '@/components/ui'
 import { ProtectedRoute } from '@/features/auth/components/ProtectedRoute'
 import NotFoundPage from '@/pages/NotFoundPage'
+import RouteErrorPage from '@/pages/RouteErrorPage'
 
 /** Carrega cada página sob demanda (code splitting por rota). */
 const page = (loader) => async () => ({ Component: (await loader()).default })
@@ -11,7 +12,7 @@ const page = (loader) => async () => ({ Component: (await loader()).default })
 export const router = createBrowserRouter([
   {
     element: <RootLayout />,
-    errorElement: <NotFoundPage />,
+    errorElement: <RouteErrorPage />,
     hydrateFallbackElement: <Spinner className="py-24" />,
     children: [
       // Telas com a barra de navegação inferior

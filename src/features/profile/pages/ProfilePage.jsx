@@ -50,7 +50,7 @@ function MenuItem({ to, emoji, label, soon }) {
     <li className={`${classes} opacity-70`}>{content}</li>
   ) : (
     <li>
-      <Link to={to} className={`${classes} hover:text-primary transition-colors`}>
+      <Link to={to} className={`${classes} hover:text-primary-ink transition-colors`}>
         {content}
       </Link>
     </li>

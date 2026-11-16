@@ -33,7 +33,7 @@ export function RequestCard({ request, role, onAction, busy }) {
       className={`rounded-card shadow-card bg-white p-4 transition-opacity ${isInactive ? 'opacity-75' : ''}`}
     >
       <div className="flex gap-3.5">
-        <div className="bg-primary-light text-primary flex w-14 shrink-0 flex-col items-center justify-center rounded-xl py-2 leading-none">
+        <div className="bg-primary-light text-primary-ink flex w-14 shrink-0 flex-col items-center justify-center rounded-xl py-2 leading-none">
           <span className="text-xl font-bold">{day}</span>
           <span className="mt-1 text-[10px] font-semibold tracking-wide">
             {MONTHS[Number(month) - 1]}
@@ -44,7 +44,7 @@ export function RequestCard({ request, role, onAction, busy }) {
           <div className="flex items-start justify-between gap-2">
             <Link
               to={service ? ROUTES.serviceDetail(service.id) : '#'}
-              className="hover:text-primary line-clamp-2 text-sm font-semibold transition-colors"
+              className="hover:text-primary-ink line-clamp-2 text-sm font-semibold transition-colors"
             >
               <span aria-hidden>{categoryEmoji(service?.category)}</span> {service?.title}
             </Link>
@@ -62,7 +62,9 @@ export function RequestCard({ request, role, onAction, busy }) {
             📍 {request.street}, {request.number} · {request.neighborhood}
           </p>
           <p className="mt-1.5 text-xs">
-            <span className="text-primary font-bold">{formatCurrency(request.estimatedPrice)}</span>
+            <span className="text-primary-ink font-bold">
+              {formatCurrency(request.estimatedPrice)}
+            </span>
             <span className="text-muted"> · {request.id}</span>
           </p>
         </div>

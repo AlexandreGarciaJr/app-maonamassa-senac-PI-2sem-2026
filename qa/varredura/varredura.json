@@ -1,0 +1,832 @@
+{
+  "url": "http://localhost:5173",
+  "data": "2026-11-16T04:17:02.737Z",
+  "axe": true,
+  "resultados": [
+    {
+      "url": "http://localhost:5173",
+      "viewport": "desktop",
+      "console": [],
+      "excecoes": [],
+      "falhas": [],
+      "bytes": 12531248,
+      "links": [
+        "http://localhost:5173/cadastro",
+        "http://localhost:5173/servicos",
+        "http://localhost:5173/servicos/s4",
+        "http://localhost:5173/servicos/s3",
+        "http://localhost:5173/servicos/s1",
+        "http://localhost:5173/servicos/s2",
+        "http://localhost:5173/servicos/s5",
+        "http://localhost:5173/",
+        "http://localhost:5173/agenda",
+        "http://localhost:5173/perfil"
+      ],
+      "status": 200,
+      "cabecalhosAusentes": [
+        "content-security-policy",
+        "strict-transport-security",
+        "x-content-type-options",
+        "referrer-policy",
+        "permissions-policy",
+        "x-frame-options"
+      ],
+      "metricas": {
+        "ttfb": 7,
+        "dcl": 284,
+        "load": 287,
+        "lcp": 1628,
+        "cls": 0
+      },
+      "overflowHorizontal": "não",
+      "a11y": [
+        {
+          "id": "color-contrast",
+          "impacto": "serious",
+          "ajuda": "Elements must meet minimum color contrast ratio thresholds",
+          "nos": 9,
+          "exemplo": "a[href=\"/servicos/s4\"] > .flex-1.min-w-0 > .gap-2.text-xs > .text-star.inline-flex.gap-1"
+        }
+      ],
+      "print": "prints\\inicio-desktop.png"
+    },
+    {
+      "url": "http://localhost:5173",
+      "viewport": "celular",
+      "console": [],
+      "excecoes": [],
+      "falhas": [],
+      "bytes": 12531248,
+      "links": [
+        "http://localhost:5173/cadastro",
+        "http://localhost:5173/servicos",
+        "http://localhost:5173/servicos/s4",
+        "http://localhost:5173/servicos/s3",
+        "http://localhost:5173/servicos/s1",
+        "http://localhost:5173/servicos/s2",
+        "http://localhost:5173/servicos/s5",
+        "http://localhost:5173/",
+        "http://localhost:5173/agenda",
+        "http://localhost:5173/perfil"
+      ],
+      "status": 200,
+      "cabecalhosAusentes": [
+        "content-security-policy",
+        "strict-transport-security",
+        "x-content-type-options",
+        "referrer-policy",
+        "permissions-policy",
+        "x-frame-options"
+      ],
+      "metricas": {
+        "ttfb": 5,
+        "dcl": 297,
+        "load": 299,
+        "lcp": 996,
+        "cls": 0
+      },
+      "overflowHorizontal": "não",
+      "a11y": [
+        {
+          "id": "color-contrast",
+          "impacto": "serious",
+          "ajuda": "Elements must meet minimum color contrast ratio thresholds",
+          "nos": 9,
+          "exemplo": "a[href=\"/servicos/s4\"] > .flex-1.min-w-0 > .gap-2.text-xs > .text-star.inline-flex.gap-1"
+        }
+      ],
+      "print": "prints\\inicio-celular.png"
+    },
+    {
+      "url": "http://localhost:5173/cadastro",
+      "viewport": "desktop",
+      "console": [],
+      "excecoes": [],
+      "falhas": [],
+      "bytes": 14858584,
+      "links": [
+        "http://localhost:5173/cadastro",
+        "http://localhost:5173/",
+        "http://localhost:5173/login"
+      ],
+      "status": 200,
+      "cabecalhosAusentes": [
+        "content-security-policy",
+        "strict-transport-security",
+        "x-content-type-options",
+        "referrer-policy",
+        "permissions-policy",
+        "x-frame-options"
+      ],
+      "metricas": {
+        "ttfb": 5,
+        "dcl": 273,
+        "load": 275,
+        "lcp": 508,
+        "cls": 0
+      },
+      "overflowHorizontal": "não",
+      "a11y": [
+        {
+          "id": "color-contrast",
+          "impacto": "serious",
+          "ajuda": "Elements must meet minimum color contrast ratio thresholds",
+          "nos": 2,
+          "exemplo": ".z-10.py-2\\.5[role=\"radio\"]:nth-child(2)"
+        }
+      ],
+      "print": "prints\\cadastro-desktop.png"
+    },
+    {
+      "url": "http://localhost:5173/cadastro",
+      "viewport": "celular",
+      "console": [],
+      "excecoes": [],
+      "falhas": [],
+      "bytes": 14858584,
+      "links": [
+        "http://localhost:5173/cadastro",
+        "http://localhost:5173/",
+        "http://localhost:5173/login"
+      ],
+      "status": 200,
+      "cabecalhosAusentes": [
+        "content-security-policy",
+        "strict-transport-security",
+        "x-content-type-options",
+        "referrer-policy",
+        "permissions-policy",
+        "x-frame-options"
+      ],
+      "metricas": {
+        "ttfb": 5,
+        "dcl": 267,
+        "load": 269,
+        "lcp": 476,
+        "cls": 0
+      },
+      "overflowHorizontal": "não",
+      "a11y": [
+        {
+          "id": "color-contrast",
+          "impacto": "serious",
+          "ajuda": "Elements must meet minimum color contrast ratio thresholds",
+          "nos": 2,
+          "exemplo": ".z-10.py-2\\.5[role=\"radio\"]:nth-child(2)"
+        }
+      ],
+      "print": "prints\\cadastro-celular.png"
+    },
+    {
+      "url": "http://localhost:5173/servicos",
+      "viewport": "desktop",
+      "console": [],
+      "excecoes": [],
+      "falhas": [],
+      "bytes": 12511334,
+      "links": [
+        "http://localhost:5173/servicos/s4",
+        "http://localhost:5173/servicos/s3",
+        "http://localhost:5173/servicos/s1",
+        "http://localhost:5173/servicos/s2",
+        "http://localhost:5173/servicos/s5",
+        "http://localhost:5173/",
+        "http://localhost:5173/servicos",
+        "http://localhost:5173/agenda",
+        "http://localhost:5173/perfil"
+      ],
+      "status": 200,
+      "cabecalhosAusentes": [
+        "content-security-policy",
+        "strict-transport-security",
+        "x-content-type-options",
+        "referrer-policy",
+        "permissions-policy",
+        "x-frame-options"
+      ],
+      "metricas": {
+        "ttfb": 5,
+        "dcl": 266,
+        "load": 267,
+        "lcp": 1544,
+        "cls": 0
+      },
+      "overflowHorizontal": "não",
+      "a11y": [
+        {
+          "id": "color-contrast",
+          "impacto": "serious",
+          "ajuda": "Elements must meet minimum color contrast ratio thresholds",
+          "nos": 9,
+          "exemplo": "a[href=\"/servicos/s4\"] > .mt-2\\.5.gap-3.text-xs > .text-star.inline-flex.gap-1"
+        }
+      ],
+      "print": "prints\\servicos-desktop.png"
+    },
+    {
+      "url": "http://localhost:5173/servicos",
+      "viewport": "celular",
+      "console": [],
+      "excecoes": [],
+      "falhas": [],
+      "bytes": 12511334,
+      "links": [
+        "http://localhost:5173/servicos/s4",
+        "http://localhost:5173/servicos/s3",
+        "http://localhost:5173/servicos/s1",
+        "http://localhost:5173/servicos/s2",
+        "http://localhost:5173/servicos/s5",
+        "http://localhost:5173/",
+        "http://localhost:5173/servicos",
+        "http://localhost:5173/agenda",
+        "http://localhost:5173/perfil"
+      ],
+      "status": 200,
+      "cabecalhosAusentes": [
+        "content-security-policy",
+        "strict-transport-security",
+        "x-content-type-options",
+        "referrer-policy",
+        "permissions-policy",
+        "x-frame-options"
+      ],
+      "metricas": {
+        "ttfb": 4,
+        "dcl": 278,
+        "load": 280,
+        "lcp": 1540,
+        "cls": 0
+      },
+      "overflowHorizontal": "não",
+      "a11y": [
+        {
+          "id": "color-contrast",
+          "impacto": "serious",
+          "ajuda": "Elements must meet minimum color contrast ratio thresholds",
+          "nos": 9,
+          "exemplo": "a[href=\"/servicos/s4\"] > .mt-2\\.5.gap-3.text-xs > .text-star.inline-flex.gap-1"
+        }
+      ],
+      "print": "prints\\servicos-celular.png"
+    },
+    {
+      "url": "http://localhost:5173/servicos/s4",
+      "viewport": "desktop",
+      "console": [],
+      "excecoes": [],
+      "falhas": [],
+      "bytes": 12545002,
+      "links": [
+        "http://localhost:5173/servicos/s4/contratar"
+      ],
+      "status": 200,
+      "cabecalhosAusentes": [
+        "content-security-policy",
+        "strict-transport-security",
+        "x-content-type-options",
+        "referrer-policy",
+        "permissions-policy",
+        "x-frame-options"
+      ],
+      "metricas": {
+        "ttfb": 4,
+        "dcl": 256,
+        "load": 258,
+        "lcp": 904,
+        "cls": 0
+      },
+      "overflowHorizontal": "não",
+      "a11y": [
+        {
+          "id": "color-contrast",
+          "impacto": "serious",
+          "ajuda": "Elements must meet minimum color contrast ratio thresholds",
+          "nos": 3,
+          "exemplo": "dd > .text-star.gap-1.text-xs"
+        }
+      ],
+      "print": "prints\\servicos-s4-desktop.png"
+    },
+    {
+      "url": "http://localhost:5173/servicos/s4",
+      "viewport": "celular",
+      "console": [],
+      "excecoes": [],
+      "falhas": [],
+      "bytes": 12545002,
+      "links": [
+        "http://localhost:5173/servicos/s4/contratar"
+      ],
+      "status": 200,
+      "cabecalhosAusentes": [
+        "content-security-policy",
+        "strict-transport-security",
+        "x-content-type-options",
+        "referrer-policy",
+        "permissions-policy",
+        "x-frame-options"
+      ],
+      "metricas": {
+        "ttfb": 5,
+        "dcl": 276,
+        "load": 278,
+        "lcp": 912,
+        "cls": 0
+      },
+      "overflowHorizontal": "não",
+      "a11y": [
+        {
+          "id": "color-contrast",
+          "impacto": "serious",
+          "ajuda": "Elements must meet minimum color contrast ratio thresholds",
+          "nos": 3,
+          "exemplo": "dd > .text-star.gap-1.text-xs"
+        }
+      ],
+      "print": "prints\\servicos-s4-celular.png"
+    },
+    {
+      "url": "http://localhost:5173/servicos/s3",
+      "viewport": "desktop",
+      "console": [],
+      "excecoes": [],
+      "falhas": [],
+      "bytes": 12545002,
+      "links": [
+        "http://localhost:5173/servicos/s3/contratar"
+      ],
+      "status": 200,
+      "cabecalhosAusentes": [
+        "content-security-policy",
+        "strict-transport-security",
+        "x-content-type-options",
+        "referrer-policy",
+        "permissions-policy",
+        "x-frame-options"
+      ],
+      "metricas": {
+        "ttfb": 5,
+        "dcl": 274,
+        "load": 276,
+        "lcp": 916,
+        "cls": 0
+      },
+      "overflowHorizontal": "não",
+      "a11y": [
+        {
+          "id": "color-contrast",
+          "impacto": "serious",
+          "ajuda": "Elements must meet minimum color contrast ratio thresholds",
+          "nos": 3,
+          "exemplo": "dd > .text-star.gap-1.text-xs"
+        }
+      ],
+      "print": "prints\\servicos-s3-desktop.png"
+    },
+    {
+      "url": "http://localhost:5173/servicos/s3",
+      "viewport": "celular",
+      "console": [],
+      "excecoes": [],
+      "falhas": [],
+      "bytes": 12545002,
+      "links": [
+        "http://localhost:5173/servicos/s3/contratar"
+      ],
+      "status": 200,
+      "cabecalhosAusentes": [
+        "content-security-policy",
+        "strict-transport-security",
+        "x-content-type-options",
+        "referrer-policy",
+        "permissions-policy",
+        "x-frame-options"
+      ],
+      "metricas": {
+        "ttfb": 4,
+        "dcl": 255,
+        "load": 257,
+        "lcp": 900,
+        "cls": 0
+      },
+      "overflowHorizontal": "não",
+      "a11y": [
+        {
+          "id": "color-contrast",
+          "impacto": "serious",
+          "ajuda": "Elements must meet minimum color contrast ratio thresholds",
+          "nos": 3,
+          "exemplo": "dd > .text-star.gap-1.text-xs"
+        }
+      ],
+      "print": "prints\\servicos-s3-celular.png"
+    },
+    {
+      "url": "http://localhost:5173/servicos/s1",
+      "viewport": "desktop",
+      "console": [],
+      "excecoes": [],
+      "falhas": [],
+      "bytes": 12505342,
+      "links": [
+        "http://localhost:5173/servicos/s1/contratar"
+      ],
+      "status": 200,
+      "cabecalhosAusentes": [
+        "content-security-policy",
+        "strict-transport-security",
+        "x-content-type-options",
+        "referrer-policy",
+        "permissions-policy",
+        "x-frame-options"
+      ],
+      "metricas": {
+        "ttfb": 5,
+        "dcl": 276,
+        "load": 278,
+        "lcp": 1476,
+        "cls": 0
+      },
+      "overflowHorizontal": "não",
+      "a11y": [
+        {
+          "id": "color-contrast",
+          "impacto": "serious",
+          "ajuda": "Elements must meet minimum color contrast ratio thresholds",
+          "nos": 3,
+          "exemplo": "dd > .text-star.gap-1.inline-flex"
+        }
+      ],
+      "print": "prints\\servicos-s1-desktop.png"
+    },
+    {
+      "url": "http://localhost:5173/servicos/s1",
+      "viewport": "celular",
+      "console": [],
+      "excecoes": [],
+      "falhas": [],
+      "bytes": 12505342,
+      "links": [
+        "http://localhost:5173/servicos/s1/contratar"
+      ],
+      "status": 200,
+      "cabecalhosAusentes": [
+        "content-security-policy",
+        "strict-transport-security",
+        "x-content-type-options",
+        "referrer-policy",
+        "permissions-policy",
+        "x-frame-options"
+      ],
+      "metricas": {
+        "ttfb": 5,
+        "dcl": 267,
+        "load": 270,
+        "lcp": 896,
+        "cls": 0
+      },
+      "overflowHorizontal": "não",
+      "a11y": [
+        {
+          "id": "color-contrast",
+          "impacto": "serious",
+          "ajuda": "Elements must meet minimum color contrast ratio thresholds",
+          "nos": 3,
+          "exemplo": "dd > .text-star.gap-1.inline-flex"
+        }
+      ],
+      "print": "prints\\servicos-s1-celular.png"
+    },
+    {
+      "url": "http://localhost:5173/servicos/s2",
+      "viewport": "desktop",
+      "console": [],
+      "excecoes": [],
+      "falhas": [],
+      "bytes": 12505342,
+      "links": [
+        "http://localhost:5173/servicos/s2/contratar"
+      ],
+      "status": 200,
+      "cabecalhosAusentes": [
+        "content-security-policy",
+        "strict-transport-security",
+        "x-content-type-options",
+        "referrer-policy",
+        "permissions-policy",
+        "x-frame-options"
+      ],
+      "metricas": {
+        "ttfb": 5,
+        "dcl": 275,
+        "load": 277,
+        "lcp": 912,
+        "cls": 0
+      },
+      "overflowHorizontal": "não",
+      "a11y": [
+        {
+          "id": "color-contrast",
+          "impacto": "serious",
+          "ajuda": "Elements must meet minimum color contrast ratio thresholds",
+          "nos": 3,
+          "exemplo": "dd > .text-star.gap-1.inline-flex"
+        }
+      ],
+      "print": "prints\\servicos-s2-desktop.png"
+    },
+    {
+      "url": "http://localhost:5173/servicos/s2",
+      "viewport": "celular",
+      "console": [],
+      "excecoes": [],
+      "falhas": [],
+      "bytes": 12505342,
+      "links": [
+        "http://localhost:5173/servicos/s2/contratar"
+      ],
+      "status": 200,
+      "cabecalhosAusentes": [
+        "content-security-policy",
+        "strict-transport-security",
+        "x-content-type-options",
+        "referrer-policy",
+        "permissions-policy",
+        "x-frame-options"
+      ],
+      "metricas": {
+        "ttfb": 5,
+        "dcl": 276,
+        "load": 278,
+        "lcp": 908,
+        "cls": 0
+      },
+      "overflowHorizontal": "não",
+      "a11y": [
+        {
+          "id": "color-contrast",
+          "impacto": "serious",
+          "ajuda": "Elements must meet minimum color contrast ratio thresholds",
+          "nos": 3,
+          "exemplo": "dd > .text-star.gap-1.inline-flex"
+        }
+      ],
+      "print": "prints\\servicos-s2-celular.png"
+    },
+    {
+      "url": "http://localhost:5173/servicos/s5",
+      "viewport": "desktop",
+      "console": [],
+      "excecoes": [],
+      "falhas": [],
+      "bytes": 12505342,
+      "links": [
+        "http://localhost:5173/servicos/s5/contratar"
+      ],
+      "status": 200,
+      "cabecalhosAusentes": [
+        "content-security-policy",
+        "strict-transport-security",
+        "x-content-type-options",
+        "referrer-policy",
+        "permissions-policy",
+        "x-frame-options"
+      ],
+      "metricas": {
+        "ttfb": 5,
+        "dcl": 279,
+        "load": 281,
+        "lcp": 928,
+        "cls": 0
+      },
+      "overflowHorizontal": "não",
+      "a11y": [
+        {
+          "id": "color-contrast",
+          "impacto": "serious",
+          "ajuda": "Elements must meet minimum color contrast ratio thresholds",
+          "nos": 4,
+          "exemplo": ".bg-line"
+        }
+      ],
+      "print": "prints\\servicos-s5-desktop.png"
+    },
+    {
+      "url": "http://localhost:5173/servicos/s5",
+      "viewport": "celular",
+      "console": [],
+      "excecoes": [],
+      "falhas": [],
+      "bytes": 12505342,
+      "links": [
+        "http://localhost:5173/servicos/s5/contratar"
+      ],
+      "status": 200,
+      "cabecalhosAusentes": [
+        "content-security-policy",
+        "strict-transport-security",
+        "x-content-type-options",
+        "referrer-policy",
+        "permissions-policy",
+        "x-frame-options"
+      ],
+      "metricas": {
+        "ttfb": 6,
+        "dcl": 274,
+        "load": 276,
+        "lcp": 908,
+        "cls": 0
+      },
+      "overflowHorizontal": "não",
+      "a11y": [
+        {
+          "id": "color-contrast",
+          "impacto": "serious",
+          "ajuda": "Elements must meet minimum color contrast ratio thresholds",
+          "nos": 4,
+          "exemplo": ".bg-line"
+        }
+      ],
+      "print": "prints\\servicos-s5-celular.png"
+    },
+    {
+      "url": "http://localhost:5173/",
+      "viewport": "desktop",
+      "console": [],
+      "excecoes": [],
+      "falhas": [],
+      "bytes": 12531248,
+      "links": [
+        "http://localhost:5173/cadastro",
+        "http://localhost:5173/servicos",
+        "http://localhost:5173/servicos/s4",
+        "http://localhost:5173/servicos/s3",
+        "http://localhost:5173/servicos/s1",
+        "http://localhost:5173/servicos/s2",
+        "http://localhost:5173/servicos/s5",
+        "http://localhost:5173/",
+        "http://localhost:5173/agenda",
+        "http://localhost:5173/perfil"
+      ],
+      "status": 200,
+      "cabecalhosAusentes": [
+        "content-security-policy",
+        "strict-transport-security",
+        "x-content-type-options",
+        "referrer-policy",
+        "permissions-policy",
+        "x-frame-options"
+      ],
+      "metricas": {
+        "ttfb": 5,
+        "dcl": 265,
+        "load": 267,
+        "lcp": 1600,
+        "cls": 0
+      },
+      "overflowHorizontal": "não",
+      "a11y": [
+        {
+          "id": "color-contrast",
+          "impacto": "serious",
+          "ajuda": "Elements must meet minimum color contrast ratio thresholds",
+          "nos": 9,
+          "exemplo": "a[href=\"/servicos/s4\"] > .flex-1.min-w-0 > .gap-2.text-xs > .text-star.inline-flex.gap-1"
+        }
+      ],
+      "print": "prints\\inicio-desktop.png"
+    },
+    {
+      "url": "http://localhost:5173/",
+      "viewport": "celular",
+      "console": [],
+      "excecoes": [],
+      "falhas": [],
+      "bytes": 12531248,
+      "links": [
+        "http://localhost:5173/cadastro",
+        "http://localhost:5173/servicos",
+        "http://localhost:5173/servicos/s4",
+        "http://localhost:5173/servicos/s3",
+        "http://localhost:5173/servicos/s1",
+        "http://localhost:5173/servicos/s2",
+        "http://localhost:5173/servicos/s5",
+        "http://localhost:5173/",
+        "http://localhost:5173/agenda",
+        "http://localhost:5173/perfil"
+      ],
+      "status": 200,
+      "cabecalhosAusentes": [
+        "content-security-policy",
+        "strict-transport-security",
+        "x-content-type-options",
+        "referrer-policy",
+        "permissions-policy",
+        "x-frame-options"
+      ],
+      "metricas": {
+        "ttfb": 5,
+        "dcl": 272,
+        "load": 274,
+        "lcp": 940,
+        "cls": 0
+      },
+      "overflowHorizontal": "não",
+      "a11y": [
+        {
+          "id": "color-contrast",
+          "impacto": "serious",
+          "ajuda": "Elements must meet minimum color contrast ratio thresholds",
+          "nos": 9,
+          "exemplo": "a[href=\"/servicos/s4\"] > .flex-1.min-w-0 > .gap-2.text-xs > .text-star.inline-flex.gap-1"
+        }
+      ],
+      "print": "prints\\inicio-celular.png"
+    },
+    {
+      "url": "http://localhost:5173/agenda",
+      "viewport": "desktop",
+      "console": [],
+      "excecoes": [],
+      "falhas": [],
+      "bytes": 14842913,
+      "links": [
+        "http://localhost:5173/login",
+        "http://localhost:5173/",
+        "http://localhost:5173/servicos",
+        "http://localhost:5173/agenda",
+        "http://localhost:5173/perfil"
+      ],
+      "status": 200,
+      "cabecalhosAusentes": [
+        "content-security-policy",
+        "strict-transport-security",
+        "x-content-type-options",
+        "referrer-policy",
+        "permissions-policy",
+        "x-frame-options"
+      ],
+      "metricas": {
+        "ttfb": 6,
+        "dcl": 267,
+        "load": 269,
+        "lcp": 472,
+        "cls": 0
+      },
+      "overflowHorizontal": "não",
+      "a11y": [
+        {
+          "id": "color-contrast",
+          "impacto": "serious",
+          "ajuda": "Elements must meet minimum color contrast ratio thresholds",
+          "nos": 5,
+          "exemplo": ".group\\/btn"
+        }
+      ],
+      "print": "prints\\agenda-desktop.png"
+    },
+    {
+      "url": "http://localhost:5173/agenda",
+      "viewport": "celular",
+      "console": [],
+      "excecoes": [],
+      "falhas": [],
+      "bytes": 14842913,
+      "links": [
+        "http://localhost:5173/login",
+        "http://localhost:5173/",
+        "http://localhost:5173/servicos",
+        "http://localhost:5173/agenda",
+        "http://localhost:5173/perfil"
+      ],
+      "status": 200,
+      "cabecalhosAusentes": [
+        "content-security-policy",
+        "strict-transport-security",
+        "x-content-type-options",
+        "referrer-policy",
+        "permissions-policy",
+        "x-frame-options"
+      ],
+      "metricas": {
+        "ttfb": 5,
+        "dcl": 258,
+        "load": 260,
+        "lcp": 460,
+        "cls": 0
+      },
+      "overflowHorizontal": "não",
+      "a11y": [
+        {
+          "id": "color-contrast",
+          "impacto": "serious",
+          "ajuda": "Elements must meet minimum color contrast ratio thresholds",
+          "nos": 5,
+          "exemplo": ".group\\/btn"
+        }
+      ],
+      "print": "prints\\agenda-celular.png"
+    }
+  ],
+  "linksQuebrados": []
+}

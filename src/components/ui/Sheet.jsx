@@ -1,6 +1,9 @@
 import { useEffect, useId, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
+const FOCUSABLE =
+  'button:not([disabled]), a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+
 /**
  * Painel que sobe do rodapé (padrão mobile para confirmações e ações rápidas).
  * Fecha com Esc ou tocando fora. Fica preso à coluna de 480px do app.
@@ -16,13 +19,37 @@ export function Sheet({ open, onClose, emoji, title, children }) {
 
   useEffect(() => {
     if (!open) return undefined
-    const onKey = (event) => event.key === 'Escape' && onCloseRef.current()
+    // Guarda quem abriu o painel para devolver o foco ao fechar (BUG-005).
+    const opener = document.activeElement
+
+    const onKey = (event) => {
+      if (event.key === 'Escape') {
+        onCloseRef.current()
+        return
+      }
+      if (event.key !== 'Tab' || !panelRef.current) return
+      // Mantém o Tab dentro do painel enquanto ele estiver aberto.
+      const focusable = [...panelRef.current.querySelectorAll(FOCUSABLE)]
+      if (focusable.length === 0) return
+      const first = focusable[0]
+      const last = focusable.at(-1)
+      const inside = panelRef.current.contains(document.activeElement)
+      if (event.shiftKey && (document.activeElement === first || !inside)) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && (document.activeElement === last || !inside)) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
+
     document.addEventListener('keydown', onKey)
     document.body.style.overflow = 'hidden'
-    panelRef.current?.querySelector('button, a')?.focus()
+    panelRef.current?.querySelector(FOCUSABLE)?.focus()
     return () => {
       document.removeEventListener('keydown', onKey)
       document.body.style.overflow = ''
+      if (opener instanceof HTMLElement && opener.isConnected) opener.focus()
     }
   }, [open])
 
