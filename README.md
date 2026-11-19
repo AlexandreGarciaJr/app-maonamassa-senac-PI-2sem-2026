@@ -17,7 +17,6 @@ Projeto Integrador do 2º semestre do curso de Análise e Desenvolvimento de Sis
 
 ## Sumário
 
-- [Equipe](#equipe)
 - [Situação do projeto](#situação-do-projeto)
 - [Funcionalidades](#funcionalidades)
 - [Tecnologias](#tecnologias)
@@ -32,16 +31,6 @@ Projeto Integrador do 2º semestre do curso de Análise e Desenvolvimento de Sis
 - [Conclusão](#conclusão)
 
 ---
-
-## Equipe
-
-| Integrante(s)      | Responsabilidade                                                                  |
-| ------------------ | --------------------------------------------------------------------------------- |
-| Alexandre          | Frontend (telas, testes e QA)                                                     |
-| Gui e Claudia      | Protótipo no Figma (Cap. 4), com a identidade do app (coral `#E85D5D`, Poppins)   |
-| Pamela e Gui       | Diagrama do banco (DER) e script SQL                                              |
-| Anderson e Maycon  | Backend (API seguindo [`docs/API.md`](docs/API.md))                               |
-| Airon              | README e conclusão                                                                |
 
 ## Situação do projeto
 
