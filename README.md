@@ -11,34 +11,23 @@ O Maonamassa é um aplicativo web mobile-first que conecta clientes a prestadore
 - **Botão de segurança:** durante a visita, avisa um contato de emergência e compartilha os dados do atendimento.
 - **Pagamento retido:** o valor só é liberado ao prestador depois que o cliente confirma a conclusão do serviço.
 
-Projeto Integrador do 2º semestre do curso de Análise e Desenvolvimento de Sistemas (ADS), Senac Santo Amaro, 2026.
-
 ---
 
 ## Sumário
 
-- [Situação do projeto](#situação-do-projeto)
 - [Funcionalidades](#funcionalidades)
 - [Tecnologias](#tecnologias)
 - [Como rodar](#como-rodar)
-- [Contas de demonstração](#contas-de-demonstração)
+- [Modo demonstração](#modo-demonstração)
 - [Telas e rotas](#telas-e-rotas)
 - [Estrutura de pastas](#estrutura-de-pastas)
-- [Integração com o backend](#integração-com-o-backend)
+- [Conexão com a API](#conexão-com-a-api)
 - [Testes e qualidade](#testes-e-qualidade)
 - [Publicação](#publicação)
 - [Documentação complementar](#documentação-complementar)
 - [Conclusão](#conclusão)
 
 ---
-
-## Situação do projeto
-
-- **Frontend:** concluído e testado. Relatório em [`qa/RELATORIO-QA.md`](qa/RELATORIO-QA.md), com decisão **GO com ressalvas**.
-- **Backend e banco:** a API deve seguir o contrato de [`docs/API.md`](docs/API.md), que é o que o frontend já espera. Enquanto ela não estiver no ar, o app roda em **modo demonstração**, com dados simulados em `src/mocks/`.
-- **Pagamento:** nesta fase a contratação é demonstrativa e nenhum pagamento é processado.
-
-> Os dados simulados de `src/mocks/` servem só para visualização. Eles **não** devem ser copiados para o banco. Com o backend no ar, os dados passam a vir do uso real do app: cadastros, serviços publicados e contratações.
 
 ## Funcionalidades
 
@@ -89,7 +78,7 @@ npm install
 npm run dev
 ```
 
-Abra http://localhost:5173. Sem nenhuma configuração, o app roda em modo demonstração.
+Abra http://localhost:5173.
 
 | Script              | O que faz                                    |
 | ------------------- | -------------------------------------------- |
@@ -102,7 +91,9 @@ Abra http://localhost:5173. Sem nenhuma configuração, o app roda em modo demon
 | `npm run lint`      | Análise estática (ESLint)                    |
 | `npm run format`    | Formata o código (Prettier)                  |
 
-## Contas de demonstração
+## Modo demonstração
+
+Sem nenhuma configuração, o app usa dados simulados (`src/mocks/`), no mesmo formato da API. Esses dados servem só para visualização. Com a API conectada, tudo passa a vir do uso real: cadastros, serviços publicados e contratações. Nesta versão a contratação é demonstrativa e nenhum pagamento é processado.
 
 | Perfil    | E-mail                     | Senha    |
 | --------- | -------------------------- | -------- |
@@ -142,18 +133,18 @@ src/
 ├── config/       # leitura das variáveis de ambiente
 ├── hooks/        # hooks genéricos
 ├── lib/          # cliente HTTP, máscaras, validações e formatação
-├── mocks/        # dados simulados (saem com o backend)
+├── mocks/        # dados simulados do modo demonstração
 ├── pages/        # página não encontrada e página de erro
 ├── styles/       # CSS global (Tailwind)
 └── test/         # testes unitários e configuração
-docs/API.md       # contrato entre frontend e backend
+docs/API.md       # contrato da API
 e2e/              # testes de ponta a ponta (Playwright)
 qa/               # plano de testes, bugs, evidências e relatórios
 ```
 
-Cada funcionalidade tem uma pasta `api/` com as chamadas ao servidor. Em modo demonstração essas funções respondem com os dados de `src/mocks/`, seguindo o mesmo formato da API real.
+Cada funcionalidade tem uma pasta `api/` com as chamadas ao servidor. No modo demonstração essas funções respondem com os dados de `src/mocks/`.
 
-## Integração com o backend
+## Conexão com a API
 
 1. Copie `.env.example` para `.env.local`.
 2. Ajuste as variáveis:
@@ -163,15 +154,15 @@ VITE_API_URL=https://endereco-da-api/api
 VITE_USE_MOCKS=false
 ```
 
-3. Rode `npm run test:all` de novo para conferir os fluxos com a API real.
+3. Rode `npm run test:all` para conferir os fluxos com a API real.
 
-O contrato completo (endpoints, formatos, status e regras de permissão) está em [`docs/API.md`](docs/API.md). Pontos que o backend precisa garantir:
+O contrato completo (endpoints, formatos, status e regras de permissão) está em [`docs/API.md`](docs/API.md). Principais regras:
 
 - Rotas autenticadas recebem `Authorization: Bearer <token>`. Uma resposta `401` encerra a sessão no app.
 - Erros respondem com o status HTTP adequado e corpo `{ "message": "texto para o usuário" }`.
-- Só o cliente dono e o prestador do serviço podem ver uma solicitação (ver [BUG-001](qa/bugs/BUG-001.md)).
-- E-mail e CPF devem ser únicos no cadastro.
-- A distância (`distanceKm`) é calculada pelo backend a partir da localização do usuário.
+- Só o cliente dono e o prestador do serviço podem ver uma solicitação.
+- E-mail e CPF são únicos no cadastro.
+- A distância (`distanceKm`) é calculada pela API a partir da localização do usuário.
 
 ## Testes e qualidade
 
@@ -181,7 +172,7 @@ npm run test:e2e   # 15 testes de ponta a ponta (Playwright, usa o Microsoft Edg
 npm run lint
 ```
 
-Resultado do QA do frontend (16/11/2026):
+Resultados:
 
 - **10 de 10** fluxos críticos passando. A suíte E2E rodou 3 vezes seguidas sem nenhum teste instável.
 - **8 bugs** encontrados (1 alto, 4 médios, 3 baixos): 7 corrigidos com teste de regressão e 1 corrigido em parte.
@@ -189,11 +180,11 @@ Resultado do QA do frontend (16/11/2026):
 - **Segurança:** sem XSS, sem segredos no build e 0 vulnerabilidades nas dependências.
 - **Acessibilidade:** texto sobre fundo claro dentro do contraste mínimo. Ressalva: texto branco sobre o coral `#E85D5D` fica em 3,4:1, mantido para preservar a identidade visual.
 
-Ressalvas em aberto: testar no Safari/iOS, configurar cabeçalhos de segurança no deploy e, na integração real, guardar o token em cookie `HttpOnly` em vez de `localStorage`.
+Pontos em aberto: testar no Safari/iOS, configurar cabeçalhos de segurança no deploy e, com a API real, guardar o token em cookie `HttpOnly` em vez de `localStorage`.
 
 ## Publicação
 
-Importe o repositório na [Vercel](https://vercel.com) com o preset **Vite**. O `vercel.json` já redireciona todas as rotas para o `index.html`, então os links diretos (por exemplo `/servicos/s3`) funcionam. Configure `VITE_API_URL` e `VITE_USE_MOCKS` nas variáveis de ambiente do projeto quando o backend estiver no ar.
+Importe o repositório na [Vercel](https://vercel.com) com o preset **Vite**. O `vercel.json` já redireciona todas as rotas para o `index.html`, então os links diretos (por exemplo `/servicos/s3`) funcionam. Para usar a API real, configure `VITE_API_URL` e `VITE_USE_MOCKS` nas variáveis de ambiente do projeto.
 
 Depois de publicar, siga o roteiro de *smoke* do [relatório de QA](qa/RELATORIO-QA.md#smoke-pós-deploy-quando-publicar).
 
@@ -202,7 +193,7 @@ Depois de publicar, siga o roteiro de *smoke* do [relatório de QA](qa/RELATORIO
 | Documento                                                              | Conteúdo                                       |
 | ---------------------------------------------------------------------- | ---------------------------------------------- |
 | [`docs/API.md`](docs/API.md)                                           | Contrato da API                                |
-| [`qa/RELATORIO-QA.md`](qa/RELATORIO-QA.md)                             | Relatório de QA e decisão de entrega           |
+| [`qa/RELATORIO-QA.md`](qa/RELATORIO-QA.md)                             | Relatório de QA                                |
 | [`qa/PLANO-DE-TESTES.md`](qa/PLANO-DE-TESTES.md)                       | Plano de testes                                |
 | [`qa/RELATORIO-NAO-FUNCIONAL.md`](qa/RELATORIO-NAO-FUNCIONAL.md)       | Acessibilidade, performance e segurança        |
 | [`qa/bugs/`](qa/bugs/)                                                 | Bugs encontrados (BUG-001 a BUG-008)           |
@@ -210,21 +201,19 @@ Depois de publicar, siga o roteiro de *smoke* do [relatório de QA](qa/RELATORIO
 
 ## Conclusão
 
-O Maonamassa nasceu de um problema concreto: a falta de segurança e de confiança na contratação de prestadores de serviço autônomos, sentida principalmente por mulheres que recebem desconhecidos em casa. Para responder a isso, o grupo propôs uma aplicação que vai além de juntar oferta e procura. Ela traz mecanismos de proteção ao longo de todo o atendimento: verificação de identidade dos prestadores, preferência de gênero tanto para clientes quanto para prestadoras, um botão de segurança que aciona um contato de emergência durante a visita e um pagamento que só é liberado depois que o cliente confirma a conclusão do serviço.
+O Maonamassa responde a um problema concreto: a falta de segurança e de confiança na contratação de prestadores de serviço autônomos, sentida principalmente por mulheres que recebem desconhecidos em casa. Por isso a aplicação vai além de juntar oferta e procura. Ela traz proteção ao longo de todo o atendimento: verificação de identidade dos prestadores, preferência de gênero para clientes e prestadoras, botão de segurança que aciona um contato de emergência durante a visita e pagamento liberado só depois que o cliente confirma a conclusão do serviço.
 
 ### Entregas
 
-O objetivo de construir uma solução funcional que mostrasse essa proposta foi alcançado na camada de interface. O frontend está publicado e cobre todo o percurso do usuário: busca, comparação de profissionais, contratação, acompanhamento na agenda e gestão do perfil, para clientes e para prestadores. O trabalho também foi validado por um processo de qualidade estruturado. Foram 39 testes unitários e 15 testes de ponta a ponta, todos os dez fluxos críticos aprovados e oito defeitos encontrados, dos quais sete foram corrigidos. A verificação incluiu ainda critérios de acessibilidade, desempenho e segurança.
+A aplicação está publicada e cobre todo o percurso do usuário: busca, comparação de profissionais, contratação, acompanhamento na agenda e gestão do perfil, para clientes e para prestadores. A qualidade foi verificada com 39 testes unitários e 15 testes de ponta a ponta. Os dez fluxos críticos foram aprovados e, dos oito defeitos encontrados, sete foram corrigidos. A verificação incluiu ainda acessibilidade, desempenho e segurança.
 
 ### Dificuldades
 
-A principal dificuldade foi coordenar frentes que dependem umas das outras: protótipo, banco de dados, backend e interface. A saída foi definir cedo um contrato de API documentado e criar dados simulados que seguem esse contrato. Assim, a interface pôde ser desenvolvida e testada sem esperar o servidor, e a integração futura se resume a trocar uma configuração. Essa decisão mostrou na prática a importância de separar responsabilidades e de documentar as interfaces entre as partes de um sistema.
+O principal desafio técnico foi desenvolver e testar a interface antes de a API existir. A solução foi definir um contrato de API documentado e um modo demonstração com dados simulados no mesmo formato. Com isso, as telas funcionam e são testadas de ponta a ponta, e a conexão com a API real se resume a trocar uma configuração.
 
 ### Próximos passos
 
-- Concluir o backend e o banco de dados e integrá-los à aplicação.
+- Conectar a aplicação à API real e ao banco de dados.
 - Implementar o processamento real de pagamentos e o envio efetivo de alertas pelo botão de segurança.
 - Testar a aplicação no Safari/iOS.
 - Reforçar a segurança da publicação com cabeçalhos HTTP e o armazenamento da sessão em cookies protegidos.
-
-Além do produto, o projeto permitiu ao grupo aplicar de forma integrada os conteúdos do semestre, como modelagem de dados, desenvolvimento web, testes de software e trabalho em equipe, aproximando a formação acadêmica das práticas do mercado.
