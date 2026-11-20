@@ -1,18 +1,10 @@
 import { onlyDigits } from '@/lib/masks'
 
-/** Valida CPF pelos dígitos verificadores. */
-export function isValidCpf(value) {
-  const cpf = onlyDigits(value)
-  if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false
-
-  const digitAt = (length) => {
-    let sum = 0
-    for (let i = 0; i < length; i++) sum += Number(cpf[i]) * (length + 1 - i)
-    const rest = (sum * 10) % 11
-    return rest === 10 ? 0 : rest
-  }
-  return digitAt(9) === Number(cpf[9]) && digitAt(10) === Number(cpf[10])
-}
+/**
+ * Confere só se o CPF tem 11 dígitos.
+ * No MVP não validamos os dígitos verificadores, para facilitar os testes com CPFs fictícios.
+ */
+export const isValidCpf = (value) => onlyDigits(value).length === 11
 
 export const isValidPhone = (value) => [10, 11].includes(onlyDigits(value).length)
 

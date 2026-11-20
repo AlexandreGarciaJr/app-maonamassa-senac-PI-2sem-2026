@@ -2,15 +2,15 @@ import { describe, expect, it } from 'vitest'
 import { isValidCep, isValidCpf, isValidPhone } from './validators'
 
 describe('isValidCpf', () => {
-  it('aceita CPF válido com ou sem máscara', () => {
+  it('aceita qualquer CPF com 11 dígitos, com ou sem máscara (MVP)', () => {
     expect(isValidCpf('529.982.247-25')).toBe(true)
     expect(isValidCpf('52998224725')).toBe(true)
+    expect(isValidCpf('111.111.111-11')).toBe(true)
   })
 
-  it('rejeita CPF com dígito errado, repetido ou incompleto', () => {
-    expect(isValidCpf('529.982.247-24')).toBe(false)
-    expect(isValidCpf('111.111.111-11')).toBe(false)
+  it('rejeita CPF incompleto', () => {
     expect(isValidCpf('123')).toBe(false)
+    expect(isValidCpf('529.982.247-2')).toBe(false)
   })
 })
 

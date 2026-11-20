@@ -7,14 +7,11 @@ import {
   Alert,
   Button,
   CheckboxField,
-  ChoiceCards,
   MaskedTextField,
-  SelectField,
   TextareaField,
   TextField,
 } from '@/components/ui'
 import { labelClasses } from '@/components/ui/fieldClasses'
-import { CATEGORIES } from '@/constants/categories'
 import { ROUTES } from '@/constants/routes'
 import { cn } from '@/lib/cn'
 import { maskCep } from '@/lib/masks'
@@ -29,22 +26,6 @@ const ROLES = [
 ]
 
 const SCHEMAS = { cliente: clientRegisterSchema, prestador: providerRegisterSchema }
-
-const EXPERIENCE_OPTIONS = [
-  { value: 'menos_1', label: 'Menos de 1 ano' },
-  { value: '1_3', label: '1 a 3 anos' },
-  { value: '3_5', label: '3 a 5 anos' },
-  { value: '5_10', label: '5 a 10 anos' },
-  { value: 'mais_10', label: 'Mais de 10 anos' },
-]
-
-const RADIUS_OPTIONS = [5, 10, 20, 30].map((km) => ({ value: String(km), label: `Até ${km} km` }))
-
-const SPECIALTY_OPTIONS = CATEGORIES.map(({ slug, label, emoji }) => ({
-  value: slug,
-  label,
-  emoji,
-}))
 
 /** Alternador "Sou Cliente / Sou Prestador" com indicador deslizante. */
 function RoleToggle({ value, onChange }) {
@@ -115,9 +96,6 @@ export default function RegisterPage() {
     defaultValues: {
       ...accountDefaults,
       preferWomen: false,
-      specialties: [],
-      experience: '',
-      serviceRadiusKm: '10',
       cep: '',
       neighborhood: '',
       bio: '',
@@ -155,9 +133,6 @@ export default function RegisterPage() {
           phone: data.phone,
           gender: data.gender,
           password: data.password,
-          specialties: data.specialties,
-          experience: data.experience,
-          serviceRadiusKm: Number(data.serviceRadiusKm),
           cep: data.cep,
           neighborhood: data.neighborhood,
           bio: data.bio,
@@ -211,27 +186,6 @@ export default function RegisterPage() {
           {isProvider && (
             <div key="provider" className="animate-page space-y-4">
               <SectionTitle>Sua atuação</SectionTitle>
-              <ChoiceCards
-                legend="Especialidades"
-                type="checkbox"
-                options={SPECIALTY_OPTIONS}
-                inputProps={register('specialties')}
-                error={errors.specialties?.message}
-              />
-              <div className="grid grid-cols-2 gap-3">
-                <SelectField
-                  label="Experiência"
-                  placeholder="Selecione..."
-                  options={EXPERIENCE_OPTIONS}
-                  error={errors.experience?.message}
-                  {...register('experience')}
-                />
-                <SelectField
-                  label="Atendo até"
-                  options={RADIUS_OPTIONS}
-                  {...register('serviceRadiusKm')}
-                />
-              </div>
               <div className="grid grid-cols-2 gap-3">
                 <MaskedTextField
                   control={control}

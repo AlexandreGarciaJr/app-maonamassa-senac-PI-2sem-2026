@@ -63,9 +63,6 @@ export const clientRegisterSchema = z
  * para validar só os campos visíveis; a última valida o formulário inteiro.
  */
 const providerWorkShape = {
-  specialties: z.array(z.string()).min(1, 'Selecione pelo menos uma especialidade.'),
-  experience: z.string().min(1, 'Selecione seu tempo de experiência.'),
-  serviceRadiusKm: z.string().min(1, 'Selecione o raio de atendimento.'),
   cep: z.string().refine(isValidCep, 'CEP inválido.'),
   neighborhood: z.string().trim().min(2, 'Informe seu bairro.'),
   bio: z

@@ -15,7 +15,7 @@ import {
   TextareaField,
   TextField,
 } from '@/components/ui'
-import { categoryEmoji, PRICE_UNITS } from '@/constants/categories'
+import { categoryEmoji } from '@/constants/categories'
 import { ROUTES } from '@/constants/routes'
 import { useService } from '@/features/services/hooks/useServices'
 import { formatCurrency } from '@/lib/format'
@@ -134,7 +134,6 @@ export default function HireServicePage() {
             <p className="text-primary-ink text-[15px] font-bold">
               {formatCurrency(service.price)}
             </p>
-            <p className="text-muted text-[10px]">{PRICE_UNITS[service.priceUnit]}</p>
           </div>
         </div>
 

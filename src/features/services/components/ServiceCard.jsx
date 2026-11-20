@@ -1,7 +1,7 @@
 import { BadgeCheck } from 'lucide-react'
 import { Link } from 'react-router'
 import { EmojiAvatar, Rating, Skeleton } from '@/components/ui'
-import { categoryEmoji, getCategory, PRICE_UNITS } from '@/constants/categories'
+import { categoryEmoji, getCategory } from '@/constants/categories'
 import { ROUTES } from '@/constants/routes'
 import { formatCurrency } from '@/lib/format'
 
@@ -49,7 +49,6 @@ export function ServiceCard({ service }) {
         <p className="text-primary-ink text-[15px] font-bold whitespace-nowrap">
           {formatCurrency(service.price)}
         </p>
-        <p className="text-muted text-[10px]">{PRICE_UNITS[service.priceUnit]}</p>
       </div>
     </Link>
   )

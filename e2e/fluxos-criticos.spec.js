@@ -51,7 +51,7 @@ test('4. cadastro de cliente bloqueia CPF inválido e aceita dados válidos', as
   await page.goto('/cadastro')
   await page.getByLabel('Nome completo').fill('Mariana da Conceição')
   await page.getByLabel('E-mail').fill('mariana.e2e@teste.com.br')
-  await page.getByLabel('CPF').fill('11111111111')
+  await page.getByLabel('CPF').fill('1111111')
   await page.getByLabel('Telefone').fill('11987654321')
   await page.getByLabel('Gênero').selectOption('feminino')
   await page.getByLabel('Senha', { exact: true }).fill('senhaForte1')
@@ -67,17 +67,17 @@ test('4. cadastro de cliente bloqueia CPF inválido e aceita dados válidos', as
   await expect(page.getByText('Mariana', { exact: true })).toBeVisible()
 })
 
-test('5. cadastro de prestador exige especialidade e documento', async ({ page }) => {
+test('5. cadastro de prestador exige bairro e documento', async ({ page }) => {
   await page.goto('/cadastro')
   await page.getByRole('radio', { name: 'Sou Prestador' }).click()
   await expect(page).toHaveURL(/tipo=prestador/)
   await page.getByRole('button', { name: 'Criar Conta' }).click()
-  await expect(page.getByText('Selecione pelo menos uma especialidade.')).toBeVisible()
+  await expect(page.getByText('Informe seu bairro.')).toBeVisible()
   await expect(page.getByText('Envie uma foto do seu documento com foto.')).toBeVisible()
 
   // Voltar para cliente limpa os erros do prestador
   await page.getByRole('radio', { name: 'Sou Cliente' }).click()
-  await expect(page.getByText('Selecione pelo menos uma especialidade.')).toHaveCount(0)
+  await expect(page.getByText('Informe seu bairro.')).toHaveCount(0)
 })
 
 test('6. agenda do cliente: botão de segurança e confirmar conclusão', async ({ page }) => {

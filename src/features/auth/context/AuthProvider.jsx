@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { sessionStore } from '@/lib/storage'
 import { authApi } from '../api/authApi'
@@ -29,7 +29,22 @@ export function AuthProvider({ children }) {
     sessionStore.clear()
     setSession(null)
     queryClient.clear()
+    authApi.logout().catch(() => {})
   }, [queryClient])
+
+  // Se a sessão salva no navegador expirou no servidor, volta para o modo visitante.
+  useEffect(() => {
+    if (!sessionStore.getToken()) return
+    authApi
+      .hasValidSession()
+      .then((valid) => {
+        if (!valid) {
+          sessionStore.clear()
+          setSession(null)
+        }
+      })
+      .catch(() => {})
+  }, [])
 
   /** Atualiza dados/preferências do usuário logado e mantém a sessão em dia. */
   const updateProfile = useCallback(

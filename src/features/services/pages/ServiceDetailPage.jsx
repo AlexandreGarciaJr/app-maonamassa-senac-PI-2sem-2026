@@ -3,23 +3,21 @@ import { Link, useParams } from 'react-router'
 import { BottomAction } from '@/components/layout/BottomAction'
 import { BackPill, CurvedHeader } from '@/components/layout/CurvedHeader'
 import { Badge, Button, Card, EmojiAvatar, EmptyState, Rating, Skeleton } from '@/components/ui'
-import { categoryEmoji, getCategory, PRICE_UNITS } from '@/constants/categories'
+import { categoryEmoji, getCategory } from '@/constants/categories'
 import { ROUTES } from '@/constants/routes'
+import { useAuth } from '@/features/auth/hooks/useAuth'
 import { formatCurrency, formatDate } from '@/lib/format'
 import { useService } from '../hooks/useServices'
 
 const providerEmoji = (gender) => (gender === 'feminino' ? '👩‍🔧' : '👷')
 
 function ProviderBlock({ provider }) {
-  const specialties = provider.specialties.map((slug) => getCategory(slug)?.area).join(', ')
-
   return (
     <Card title="Prestador">
       <div className="flex items-center gap-3">
         <EmojiAvatar emoji={providerEmoji(provider.gender)} size={48} />
         <div className="min-w-0">
           <p className="text-[15px] font-semibold">{provider.name}</p>
-          <p className="text-muted text-xs">{specialties}</p>
         </div>
       </div>
 
@@ -38,7 +36,12 @@ function ProviderBlock({ provider }) {
         {[
           ['Avaliação', provider.rating > 0 ? <Rating value={provider.rating} /> : 'Nova'],
           ['Serviços', provider.jobsDone],
-          ['Distância', `${provider.distanceKm.toFixed(1).replace('.', ',')} km`],
+          [
+            'Distância',
+            provider.distanceKm != null
+              ? `${provider.distanceKm.toFixed(1).replace('.', ',')} km`
+              : '—',
+          ],
         ].map(([label, value]) => (
           <div key={label} className="bg-canvas rounded-[10px] px-2 py-2.5">
             <dt className="text-muted text-[10px] font-medium uppercase">{label}</dt>
@@ -50,7 +53,7 @@ function ProviderBlock({ provider }) {
       <p className="mt-3.5 text-sm leading-relaxed">{provider.bio}</p>
       <p className="text-muted mt-2 flex items-center gap-1 text-xs">
         <MapPin className="size-3.5" aria-hidden />
-        {provider.neighborhood}, {provider.city} · desde{' '}
+        {provider.neighborhood ? `${provider.neighborhood}, ${provider.city} · desde ` : 'Desde '}
         {formatDate(provider.memberSince, { month: 'short', year: 'numeric' })}
       </p>
     </Card>
@@ -82,6 +85,7 @@ function ReviewsBlock({ reviews }) {
 
 export default function ServiceDetailPage() {
   const { serviceId } = useParams()
+  const { user } = useAuth()
   const { data: service, isPending, isError } = useService(serviceId)
 
   if (isPending) {
@@ -121,6 +125,7 @@ export default function ServiceDetailPage() {
   }
 
   const category = getCategory(service.category)
+  const isOwner = user?.id === service.providerId
 
   return (
     <>
@@ -143,7 +148,7 @@ export default function ServiceDetailPage() {
       <div className="stagger space-y-4 px-5 pt-8 pb-28">
         <div className="rounded-card shadow-card flex items-center justify-between bg-white p-[18px]">
           <div>
-            <p className="text-muted text-xs font-medium">Valor {PRICE_UNITS[service.priceUnit]}</p>
+            <p className="text-muted text-xs font-medium">Valor</p>
             <p className="text-primary-ink text-2xl font-bold">{formatCurrency(service.price)}</p>
           </div>
           <span className="text-[32px]" aria-hidden>
@@ -178,9 +183,15 @@ export default function ServiceDetailPage() {
       </div>
 
       <BottomAction>
-        <Button as={Link} to={ROUTES.hireService(service.id)} fullWidth>
-          ✅ Contratar Serviço
-        </Button>
+        {isOwner ? (
+          <Button as={Link} to={ROUTES.editService(service.id)} fullWidth>
+            ✏️ Editar Serviço
+          </Button>
+        ) : (
+          <Button as={Link} to={ROUTES.hireService(service.id)} fullWidth>
+            ✅ Contratar Serviço
+          </Button>
+        )}
       </BottomAction>
     </>
   )

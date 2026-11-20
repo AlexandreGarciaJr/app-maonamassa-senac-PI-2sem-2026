@@ -56,6 +56,11 @@ export const router = createBrowserRouter([
                 path: 'prestador/servicos/novo',
                 lazy: page(() => import('@/features/services/pages/CreateServicePage')),
               },
+              {
+                // Mesmo formulário do cadastro, preenchido com o serviço existente.
+                path: 'prestador/servicos/:serviceId/editar',
+                lazy: page(() => import('@/features/services/pages/CreateServicePage')),
+              },
             ],
           },
         ],

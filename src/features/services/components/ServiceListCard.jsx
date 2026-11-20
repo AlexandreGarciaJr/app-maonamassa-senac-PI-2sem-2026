@@ -1,7 +1,7 @@
 import { BadgeCheck, MapPin } from 'lucide-react'
 import { Link } from 'react-router'
 import { Rating } from '@/components/ui'
-import { getCategory, PRICE_UNITS } from '@/constants/categories'
+import { getCategory } from '@/constants/categories'
 import { ROUTES } from '@/constants/routes'
 import { formatCurrency } from '@/lib/format'
 
@@ -37,18 +37,19 @@ export function ServiceListCard({ service }) {
         ) : (
           <span>Novo</span>
         )}
-        <span className="inline-flex items-center gap-0.5">
-          <MapPin className="size-3.5" aria-hidden />
-          {provider?.distanceKm.toFixed(1).replace('.', ',')} km
-        </span>
+        {provider?.distanceKm != null && (
+          <span className="inline-flex items-center gap-0.5">
+            <MapPin className="size-3.5" aria-hidden />
+            {provider.distanceKm.toFixed(1).replace('.', ',')} km
+          </span>
+        )}
       </div>
 
       <div className="border-line mt-3 flex items-end justify-between border-t pt-3">
         <p>
           <span className="text-primary-ink text-[17px] font-bold">
             {formatCurrency(service.price)}
-          </span>{' '}
-          <span className="text-muted text-[11px]">{PRICE_UNITS[service.priceUnit]}</span>
+          </span>
         </p>
         <p className="text-muted flex items-center gap-1 text-[11px]">
           por {provider?.name}

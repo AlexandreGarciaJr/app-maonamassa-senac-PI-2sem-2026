@@ -5,6 +5,7 @@ import { Alert, Button, EmptyState, Sheet, Skeleton } from '@/components/ui'
 import { ROUTES } from '@/constants/routes'
 import { useAuth } from '@/features/auth/hooks/useAuth'
 import { cn } from '@/lib/cn'
+import { hiringApi } from '../api/hiringApi'
 import { RequestCard } from '../components/RequestCard'
 import { useMyHireRequests, useUpdateHireStatus } from '../hooks/useHiring'
 import { isActiveRequest } from '../status'
@@ -73,7 +74,23 @@ function Tabs({ value, onChange, counts }) {
 /** Botão de segurança (diferencial do Maonamassa). Nesta fase é demonstrativo. */
 function SafetySheet({ request, onClose }) {
   const [sent, setSent] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [error, setError] = useState(null)
   const hasContact = Boolean(request?.emergencyPhone)
+
+  // Registra o alerta no banco (tabela alerta_seguranca) antes de mostrar a confirmação.
+  const notifyContact = async () => {
+    setSending(true)
+    setError(null)
+    try {
+      await hiringApi.sendSafetyAlert(request.id)
+      setSent(true)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSending(false)
+    }
+  }
 
   return (
     <Sheet
@@ -94,9 +111,14 @@ function SafetySheet({ request, onClose }) {
             : 'Você não cadastrou um contato de confiança nesta contratação. Em caso de emergência, ligue para a polícia.'}
         </p>
       )}
+      {error && (
+        <Alert variant="error" className="mt-3 text-left">
+          {error}
+        </Alert>
+      )}
       <div className="mt-5 space-y-2.5">
         {!sent && hasContact && (
-          <Button variant="danger" fullWidth onClick={() => setSent(true)}>
+          <Button variant="danger" fullWidth loading={sending} onClick={notifyContact}>
             Avisar contato de confiança
           </Button>
         )}

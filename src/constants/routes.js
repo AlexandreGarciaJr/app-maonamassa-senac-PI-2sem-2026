@@ -9,6 +9,7 @@ export const ROUTES = {
   hireService: (serviceId) => `/servicos/${serviceId}/contratar`,
   hireConfirmation: (requestId) => `/contratacoes/${requestId}/confirmacao`,
   createService: '/prestador/servicos/novo',
+  editService: (serviceId) => `/prestador/servicos/${serviceId}/editar`,
   schedule: '/agenda',
   profile: '/perfil',
 }

@@ -67,7 +67,6 @@ export const authMock = {
         id: user.id,
         name: user.name,
         gender: user.gender,
-        specialties: data.specialties,
         verified: false, // verificação de documento fica pendente até análise
         rating: 0,
         jobsDone: 0,
@@ -91,6 +90,12 @@ export const authMock = {
     if (!user) throw notFound('Usuário não encontrado.')
     return publicUser(user)
   },
+
+  async logout() {},
+
+  async hasValidSession() {
+    return true
+  },
 }
 
 const SORTERS = {
@@ -106,6 +111,7 @@ export const servicesMock = {
     let result = services
       .all()
       .map(withProvider)
+      .filter((service) => service.active !== false || Boolean(providerId))
       .filter((service) => !providerId || service.providerId === providerId)
       .filter((service) => !category || service.category === category)
       .filter((service) => !womenOnly || service.provider?.gender === 'feminino')
@@ -136,9 +142,17 @@ export const servicesMock = {
     return services.insert({
       id: newId('s'),
       providerId,
+      active: true,
       ...data,
       createdAt: new Date().toISOString(),
     })
+  },
+
+  async update(serviceId, data, { providerId }) {
+    await delay(500)
+    const service = services.find((item) => item.id === serviceId)
+    if (!service || service.providerId !== providerId) throw notFound('Serviço não encontrado.')
+    return withProvider(services.update(serviceId, data))
   },
 }
 
@@ -195,5 +209,11 @@ export const hiringMock = {
     const canSee = result && (result.clientId === userId || result.service?.providerId === userId)
     if (!canSee) throw notFound('Solicitação não encontrada.')
     return result
+  },
+
+  /** Botão de segurança: na demonstração não registra nada. */
+  async sendSafetyAlert() {
+    await delay(400)
+    return { ok: true }
   },
 }

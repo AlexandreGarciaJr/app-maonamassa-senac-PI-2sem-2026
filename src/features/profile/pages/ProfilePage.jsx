@@ -7,7 +7,7 @@ import { GENDERS } from '@/constants/categories'
 import { ROUTES } from '@/constants/routes'
 import { useAuth } from '@/features/auth/hooks/useAuth'
 import { ServiceCard } from '@/features/services/components/ServiceCard'
-import { useServices } from '@/features/services/hooks/useServices'
+import { useServices, useUpdateService } from '@/features/services/hooks/useServices'
 
 function avatarEmoji(user) {
   const isWoman = user.gender === 'feminino'
@@ -115,18 +115,65 @@ function SafetyPreferences({ user }) {
   )
 }
 
+/** Liga/desliga o serviço e leva para a edição. */
+function MyServiceControls({ service, updateService }) {
+  const savedActive = service.active !== false
+  // Mostra a mudança na hora, antes de a lista recarregar; volta atrás se o salvamento falhar.
+  const [pending, setPending] = useState(null)
+  const active = pending ?? savedActive
+  const saving = updateService.isPending && updateService.variables?.serviceId === service.id
+
+  const toggle = (checked) => {
+    setPending(checked)
+    updateService.mutate(
+      { serviceId: service.id, data: { active: checked } },
+      { onError: () => setPending(null) },
+    )
+  }
+
+  return (
+    <div className="mt-1.5 flex items-center justify-between px-1">
+      <label className="flex cursor-pointer items-center gap-2 text-xs font-medium">
+        <input
+          type="checkbox"
+          className="accent-primary size-4 cursor-pointer"
+          checked={active}
+          disabled={saving}
+          onChange={(event) => toggle(event.target.checked)}
+        />
+        {active ? 'Ativo' : 'Inativo (não aparece nas buscas)'}
+      </label>
+      <Link
+        to={ROUTES.editService(service.id)}
+        className="text-primary-ink text-xs font-semibold hover:underline"
+      >
+        ✏️ Editar
+      </Link>
+    </div>
+  )
+}
+
 function MyServices({ userId }) {
   const { data: services, isPending } = useServices({ providerId: userId })
+  const updateService = useUpdateService()
 
   return (
     <Card title="Meus serviços">
+      {updateService.isError && (
+        <Alert variant="error" className="mb-3">
+          {updateService.error.message}
+        </Alert>
+      )}
       {isPending ? (
         <Skeleton className="h-20" />
       ) : services?.length ? (
-        <ul className="space-y-2.5">
+        <ul className="space-y-3">
           {services.map((service) => (
             <li key={service.id}>
-              <ServiceCard service={service} />
+              <div className={service.active === false ? 'opacity-60' : undefined}>
+                <ServiceCard service={service} />
+              </div>
+              <MyServiceControls service={service} updateService={updateService} />
             </li>
           ))}
         </ul>

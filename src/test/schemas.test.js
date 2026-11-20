@@ -39,8 +39,11 @@ describe('cadastro de cliente', () => {
     expect(errorPaths(result)).toContain('name')
   })
 
-  it('rejeita CPF com dígito errado', () => {
-    const result = clientRegisterSchema.safeParse({ ...validClient, cpf: '529.982.247-24' })
+  it('aceita CPF fictício com 11 dígitos e rejeita CPF incompleto (MVP)', () => {
+    expect(clientRegisterSchema.safeParse({ ...validClient, cpf: '111.111.111-11' }).success).toBe(
+      true,
+    )
+    const result = clientRegisterSchema.safeParse({ ...validClient, cpf: '529.982.247' })
     expect(errorPaths(result)).toContain('cpf')
   })
 
@@ -73,9 +76,6 @@ describe('cadastro de prestador', () => {
   const file = { size: 1024 }
   const validProvider = {
     ...validClient,
-    specialties: ['eletrica'],
-    experience: '5_10',
-    serviceRadiusKm: '10',
     cep: '04696-000',
     neighborhood: 'Santo Amaro',
     bio: 'Eletricista com 10 anos de experiência.',
@@ -86,14 +86,13 @@ describe('cadastro de prestador', () => {
     expect(providerRegisterSchema.safeParse(validProvider).success).toBe(true)
   })
 
-  it('exige especialidade, CEP válido e documento', () => {
+  it('exige CEP válido e documento', () => {
     const result = providerRegisterSchema.safeParse({
       ...validProvider,
-      specialties: [],
       cep: '0469',
       document: [],
     })
-    expect(errorPaths(result)).toEqual(expect.arrayContaining(['specialties', 'cep', 'document']))
+    expect(errorPaths(result)).toEqual(expect.arrayContaining(['cep', 'document']))
   })
 
   it('rejeita documento acima de 5 MB', () => {
@@ -148,6 +147,7 @@ describe('cadastro de serviço', () => {
     price: '150.50',
     priceUnit: 'servico',
     includes: 'Visita\n\n  Garantia  ',
+    active: true,
   }
 
   it('converte valor para número e itens inclusos para lista', () => {

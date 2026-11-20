@@ -34,3 +34,15 @@ export function useCreateService() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: servicesKeys.all }),
   })
 }
+
+/** Edita um serviço do prestador logado (também usado para ativar/desativar). */
+export function useUpdateService() {
+  const queryClient = useQueryClient()
+  const { user } = useAuth()
+
+  return useMutation({
+    mutationFn: ({ serviceId, data }) =>
+      servicesApi.update(serviceId, data, { providerId: user?.id }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: servicesKeys.all }),
+  })
+}

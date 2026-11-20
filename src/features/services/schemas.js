@@ -17,7 +17,8 @@ export const createServiceSchema = z.object({
     .number({ error: 'Informe um valor.' })
     .positive('Informe um valor maior que zero.')
     .max(100000, 'Valor muito alto.'),
-  priceUnit: z.enum(['servico', 'hora', 'visita']),
+  // Serviço inativo continua salvo, mas não aparece nas buscas.
+  active: z.boolean(),
   // Um item por linha no formulário; vira array antes de enviar.
   includes: z
     .string()
