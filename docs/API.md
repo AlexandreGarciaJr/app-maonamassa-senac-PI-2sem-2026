@@ -1,198 +1,201 @@
-# Contrato da API (frontend ↔ backend)
+# Contrato do backend (Supabase)
 
-O frontend já chama estes endpoints. Enquanto o backend não existe, as respostas vêm de
-`src/mocks/handlers.js`, que segue exatamente este contrato. Quando o backend estiver no ar:
+O Maonamassa não tem servidor próprio: o app conversa direto com o **Supabase** (banco
+PostgreSQL, login e arquivos) pelo `@supabase/supabase-js`. As regras de negócio e de segurança
+ficam no banco, em [`supabase/migrations`](../supabase/README.md). Este documento descreve o que
+o front pede ao banco e o que o banco garante.
 
-1. Defina `VITE_API_URL` com a URL base (ex.: `https://api.maonamassa.com.br/api`).
-2. Defina `VITE_USE_MOCKS=false`.
+- O código que faz as chamadas está em `src/features/*/api/` (`authApi.js`, `servicesApi.js`,
+  `hiringApi.js`) e em `src/lib/supabase.js`.
+- Cada módulo tem uma versão **real** (Supabase) e uma de **demonstração** (`src/mocks`). Com
+  `VITE_USE_MOCKS=true` (padrão) o app roda sem banco; com `VITE_USE_MOCKS=false` usa o Supabase.
+- As telas recebem sempre o mesmo formato (`user`, `Service`, `HireRequest`), venha o dado do banco
+  ou dos dados de exemplo.
 
-Todas as rotas autenticadas recebem `Authorization: Bearer <token>`.
-Erros devem responder com status HTTP adequado e corpo `{ "message": "texto para o usuário" }`.
-Um `401` encerra a sessão no frontend.
+## Tabelas
+
+`usuario`, `cliente`, `prestador`, `categoria_servico`, `prestador_servico`, `endereco`,
+`atendimento`, `avaliacao`, `verificacao`, `alerta_seguranca`. O diagrama está em
+`diagrama_db_maonamassa.png`. O `id` de `usuario` é o `uuid` do login do Supabase (`auth.users`).
 
 ## Autenticação
 
-### `POST /auth/login`
+### Cadastro (`auth.signUp`)
 
-```json
-{ "email": "cliente@maonamassa.dev", "password": "123456" }
-```
+O app envia e-mail, senha e os dados do perfil em `options.data`:
 
-Resposta `200`:
+| Campo enviado             | Quem usa  | Observação                                    |
+| ------------------------- | --------- | --------------------------------------------- |
+| `papel`                   | todos     | `cliente` (padrão) ou `prestador`             |
+| `nome`, `cpf`, `telefone` | todos     |                                               |
+| `genero`                  | todos     | `feminino`, `masculino`, `outro`, `nao_informado` |
+| `prefere_mulheres`        | cliente   | booleano                                      |
+| `bio`                     | prestador |                                               |
+| `atende_somente_mulheres` | prestador | booleano                                      |
 
-```json
-{
-  "token": "jwt...",
-  "user": {
-    "id": "u1",
-    "role": "cliente",
-    "name": "Mariana Oliveira",
-    "email": "cliente@maonamassa.dev",
-    "phone": "(11) 98765-4321",
-    "gender": "feminino",
-    "preferWomen": true
-  }
-}
-```
+O próprio banco cria o perfil: o trigger `criar_perfil_no_cadastro` (em `auth.users`) insere a
+linha em `usuario` e em `cliente` **ou** `prestador`, conforme o `papel`.
 
-`role`: `cliente` | `prestador`. `gender`: `feminino` | `masculino` | `outro` | `nao_informado`.
+No formulário, as preferências `atende_somente_mulheres` (prestador) e `prefere_mulheres`
+(cliente) ficam disponíveis quando o gênero informado é `feminino`.
 
-### `POST /auth/register` (multipart/form-data)
+- **E-mail repetido:** o Supabase recusa (o app mostra "Já existe uma conta com este e-mail.").
+- **CPF repetido:** `usuario.cpf` é único; o banco recusa o cadastro e o app mostra "Já existe
+  uma conta com este CPF".
+- **Confirmação de e-mail:** com ela ligada, o cadastro não devolve sessão e o app avisa para
+  confirmar pelo link. Para a demonstração, desligue em _Authentication > Sign In / Providers > Email_.
+- **Documento do prestador:** enviado para o bucket privado `documentos`, no caminho
+  `<id do usuário>/documento-<timestamp>.<ext>` (JPG, PNG ou PDF, até 5 MB), e registrado em
+  `verificacao` (`tipo_documento = 'documento_com_foto'`). Se o envio falhar, a conta continua
+  criada. Para o documento ser enviado já no cadastro, a confirmação de e-mail precisa estar
+  desligada (configuração da demonstração).
+- **Verificação de identidade:** hoje é manual. Na tabela `usuario`, mude `status_verificacao`
+  de `pendente` para `verificado` (o app não consegue alterar essa coluna).
 
-Campos comuns: `role`, `name`, `email`, `cpf`, `phone`, `gender`, `password`.
+### Login e sessão
 
-- Cliente: `preferWomen` (boolean).
-- Prestador: `specialties[]` (slugs de categoria), `experience`, `serviceRadiusKm`, `cep`,
-  `neighborhood`, `bio`, `womenOnly` (boolean), `document` (arquivo JPG/PNG/PDF até 5 MB).
+`auth.signInWithPassword`. Depois do login o app lê `usuario`, `cliente` e `prestador` para montar
+o `user`. O papel é `prestador` quando existe linha em `prestador`; senão, `cliente`.
 
-Resposta `201`: mesmo formato do login. `400` se o e-mail ou CPF já existir.
+O app guarda `{ token, user }` no `localStorage` (chave `mnm:session`, com o `access_token` do
+Supabase). Ao abrir o app, ele confere com `auth.getSession()`; se a sessão não vale mais, volta
+para o modo visitante.
+
+### Perfil
+
+O usuário logado altera `usuario.nome`, `usuario.telefone`, `cliente.prefere_mulheres` e
+`prestador.atende_somente_mulheres`. O contato de confiança fica em
+`usuario.contato_emergencia1_nome` e `contato_emergencia1_telefone`.
 
 ## Serviços
 
-Slugs de categoria: `eletrica`, `hidraulica`, `pintura`, `alvenaria`, `manutencao`, `montagem`,
-`limpeza`, `jardinagem` (ver `src/constants/categories.js`).
+### Vitrine: `rpc('servicos_publicos')`
 
-### `GET /services?search=&category=&womenOnly=&limit=`
+Devolve os serviços junto com os dados **públicos** do prestador (nunca CPF ou telefone).
 
-Resposta `200`: lista de `Service`, ordenada por relevância/avaliação.
+| Coluna                                                     | Conteúdo                                       |
+| ---------------------------------------------------------- | ---------------------------------------------- |
+| `id`, `prestador_id`, `categoria` (slug), `tipo`, `titulo` | identificação                                  |
+| `descricao`, `inclui` (lista), `preco`, `ativo`, `criado_em` | dados do serviço                             |
+| `prestador_nome`, `prestador_genero`, `verificado`         | perfil público                                 |
+| `nota_media`, `total_avaliacoes`, `servicos_concluidos`    | reputação (calculada pelo banco)               |
+| `bio`, `membro_desde`                                      | apresentação                                   |
 
-```json
-[
-  {
-    "id": "s3",
-    "providerId": "p2",
-    "category": "hidraulica",
-    "type": "Conserto de vazamento",
-    "title": "Conserto de vazamentos em geral",
-    "description": "...",
-    "includes": ["Localização do vazamento", "Garantia de 30 dias"],
-    "price": 150,
-    "priceUnit": "servico",
-    "createdAt": "2026-10-01",
-    "reviewsCount": 2,
-    "provider": {
-      "id": "p2",
-      "name": "Joana Pereira",
-      "gender": "feminino",
-      "specialties": ["hidraulica"],
-      "verified": true,
-      "rating": 4.9,
-      "jobsDone": 87,
-      "neighborhood": "Campo Belo",
-      "city": "São Paulo",
-      "distanceKm": 2.8,
-      "memberSince": "2024-06-02",
-      "bio": "..."
-    }
-  }
-]
-```
+Serviço **inativo** só aparece para o próprio prestador ("Meus serviços"). Busca, categoria,
+"só mulheres", "só verificados", ordenação e limite são aplicados no app
+(`applyServiceFilters`), porque o volume é pequeno. Nesta versão o app é regional: não há
+localização do prestador, então `distanceKm` é sempre vazio.
 
-`priceUnit`: `servico` | `hora` | `visita`. `distanceKm` é calculado pelo backend a partir da
-localização do usuário.
+Categorias (`categoria_servico.slug`): `eletrica`, `hidraulica`, `pintura`, `alvenaria`,
+`manutencao`, `montagem`, `limpeza`, `jardinagem`.
 
-### `GET /services/:id`
+### Detalhe e avaliações: `rpc('avaliacoes_do_prestador', { p_prestador_id })`
 
-Igual a um item da lista, mais `reviews`:
+Devolve as avaliações do prestador com o nome do autor abreviado (ex.: "Maria S.").
 
-```json
-{ "...": "...", "reviews": [{ "id": "r4", "authorName": "Beatriz C.", "rating": 5, "comment": "...", "date": "2026-10-30" }] }
-```
+### Nome de outros usuários: `rpc('perfil_publico', { p_ids })`
 
-`404` se não existir.
+Devolve `id`, `nome`, `foto_url`, `genero` e `status_verificacao` dos ids informados. A Agenda usa
+para mostrar o nome do cliente (`clientName`) ao prestador. Só devolve dados de apresentação,
+nunca CPF, e-mail ou telefone.
 
-### `POST /services` (prestador)
+### Publicar e editar serviço
 
-```json
-{
-  "category": "montagem",
-  "type": "Montagem de móveis",
-  "title": "Montagem de guarda-roupas",
-  "description": "...",
-  "price": 180,
-  "priceUnit": "servico",
-  "includes": ["Montagem completa"]
-}
-```
+`insert`/`update` em `prestador_servico`. Campos do app → colunas: `category` → `categoria_id`
+(buscado pelo slug), `type` → `tipo`, `title` → `titulo`, `description` → `descricao`,
+`price` → `preco` (maior que zero), `includes` → `inclui`, `active` → `ativo`.
+Só o dono do serviço consegue inserir ou alterar.
 
-Resposta `201`: o `Service` criado. O prestador é identificado pelo token.
+## Contratação (tabela `atendimento`)
 
-## Contratação
+### Criar solicitação
 
-### `POST /hire-requests` (cliente)
+1. O app grava o endereço em `endereco` (`logradouro`, `numero`, `complemento`, `bairro`, `cep`).
+2. Insere em `atendimento`: `cliente_id`, `prestador_id`, `prestador_servico_id`, `endereco_id`,
+   `valor_acordado`, `agendado_para` e `forma_pagamento` (`pix` ou `cartao`).
+3. Se o cliente informou contato de confiança, salva em `usuario`.
 
-```json
-{
-  "serviceId": "s3",
-  "estimatedPrice": 150,
-  "date": "2026-11-20",
-  "period": "tarde",
-  "cep": "04696-000",
-  "street": "Av. Exemplo",
-  "number": "100",
-  "complement": "",
-  "neighborhood": "Santo Amaro",
-  "details": "A torneira da cozinha está pingando.",
-  "paymentMethod": "pix",
-  "emergencyName": "",
-  "emergencyPhone": ""
-}
-```
+O banco só aceita o insert se o cliente for o próprio usuário logado, o endereço for dele e o
+serviço estiver **ativo** e pertencer ao prestador informado.
 
-`period`: `manha` | `tarde` | `noite`. `paymentMethod`: `pix` | `cartao`.
+- `valor_acordado` recebe o preço do serviço que a tela envia (`estimatedPrice`).
+- O protocolo `OS-000123` é o `id` do atendimento com 6 dígitos.
+- O período vira horário (fuso de São Paulo): manhã 08:00, tarde 12:00, noite 18:00.
+- A contratação é demonstrativa: nenhum pagamento é processado.
 
-Resposta `201`: `{ "id": "OS-123456", "status": "aguardando_prestador", "createdAt": "...", ...campos enviados }`.
+### Consultar
 
-> Nesta fase do projeto a contratação é demonstrativa: nenhum pagamento é processado.
+`select` em `atendimento`: cada pessoa só recebe as linhas em que é o cliente ou o prestador.
+Abrir a solicitação de outra pessoa não retorna nada, e o app mostra "Solicitação não
+encontrada" (regra do BUG-001). O prestador também enxerga o endereço e o cadastro do cliente
+**apenas** dos atendimentos que recebeu.
 
-### `GET /hire-requests/:id`
+### Status
 
-A solicitação com o `service` (e seu `provider`) incluído. Só o cliente dono e o prestador do
-serviço podem consultar.
+Valores: `aguardando_prestador` (inicial), `confirmado`, `recusado`, `cancelado`, `concluido`.
+A mudança é validada pelo trigger `validar_mudanca_status`:
 
-### `GET /hire-requests` (Agenda)
+| Novo status  | Quem pode | A partir de                          |
+| ------------ | --------- | ------------------------------------ |
+| `confirmado` | prestador | `aguardando_prestador`               |
+| `recusado`   | prestador | `aguardando_prestador`               |
+| `cancelado`  | cliente   | `aguardando_prestador`, `confirmado` |
+| `concluido`  | cliente   | `confirmado` (grava `finalizado_em`) |
 
-Lista as solicitações do usuário logado, ordenadas por `date`, cada uma com `service` e
-`provider` incluídos e com `clientName`.
+Fora dessas regras o banco responde com erro `P0001` e uma mensagem em português; o app mostra o
+texto e trata como `400`. Ao concluir, `prestador.servicos_concluidos` aumenta sozinho.
 
-- Cliente: as solicitações que ele fez.
-- Prestador: as solicitações recebidas nos serviços dele.
+### Botão de segurança
 
-### `PATCH /hire-requests/:id`
+`insert` em `alerta_seguranca` (`atendimento_id`, `usuario_id`). Só quem participa do
+atendimento e só quando ele está `confirmado`. O `status` do alerta não pode ser alterado pelo app.
 
-```json
-{ "status": "confirmado" }
-```
+### Avaliações
 
-Status possíveis: `aguardando_prestador` (inicial), `confirmado`, `recusado`, `cancelado`,
-`concluido`. O backend deve validar quem pode fazer cada mudança:
+`insert` em `avaliacao` (`atendimento_id`, `avaliador_id`, `avaliado_id`, `nota` de 1 a 5,
+`comentario`). Só depois de `concluido`, só entre cliente e prestador daquele atendimento e uma
+vez por avaliador. O trigger recalcula `nota_media` e `total_avaliacoes`. Ainda não há tela de
+avaliação no app.
 
-| Novo status  | Quem pode  | A partir de                         |
-| ------------ | ---------- | ----------------------------------- |
-| `confirmado` | prestador  | `aguardando_prestador`              |
-| `recusado`   | prestador  | `aguardando_prestador`              |
-| `cancelado`  | cliente    | `aguardando_prestador`, `confirmado` |
-| `concluido`  | cliente    | `confirmado` (libera o pagamento)   |
+## Regras de acesso (RLS) por tabela
 
-Resposta `200`: a solicitação atualizada. `400` se a mudança não for permitida.
+| Tabela              | Quem lê                                         | Quem escreve (e o quê)                                           |
+| ------------------- | ----------------------------------------------- | ---------------------------------------------------------------- |
+| `usuario`           | o próprio                                       | o próprio: nome, telefone, foto, contatos. Nunca `status_verificacao` |
+| `cliente`           | o próprio e prestadores que o atenderam         | o próprio: `prefere_mulheres`. Nunca a nota                      |
+| `prestador`         | usuários logados                                | o próprio: `bio`, `disponivel`, `atende_somente_mulheres`. Nunca nota, total ou concluídos |
+| `categoria_servico` | todos, inclusive sem login                      | ninguém pelo app                                                 |
+| `prestador_servico` | usuários logados (a vitrine esconde os inativos) | o dono                                                          |
+| `endereco`          | o dono e o prestador do atendimento             | o dono (inserir e desativar)                                     |
+| `atendimento`       | cliente e prestador do atendimento              | cliente cria; os dois atualizam, com o trigger de status         |
+| `avaliacao`         | usuários logados                                | participante, após `concluido`                                   |
+| `verificacao`       | o próprio                                       | o próprio (inserir)                                              |
+| `alerta_seguranca`  | participantes do atendimento                    | participante, com atendimento `confirmado`                       |
+| Storage `documentos`| o próprio (pasta com o seu id)                  | o próprio                                                        |
 
-## Usuário
+Funções auxiliares no schema `privado` evitam recursão entre policies e não ficam expostas ao app.
+Os testes que conferem estas regras estão em
+[`supabase/tests/rls_seguranca.sql`](../supabase/tests/rls_seguranca.sql).
 
-### `PATCH /users/me` (Perfil)
+## Erros mais comuns
 
-Atualiza dados e preferências do usuário logado. Campos aceitos: `name`, `phone`,
-`preferWomen` (cliente) e `womenOnly` (prestadora).
+O app traduz as mensagens do Supabase em `src/lib/supabase.js` (`toApiError`):
 
-```json
-{ "preferWomen": true }
-```
+| Situação                         | Mensagem para o usuário                                  | Status |
+| -------------------------------- | -------------------------------------------------------- | ------ |
+| E-mail ou senha errados          | E-mail ou senha incorretos.                              | 401    |
+| E-mail não confirmado            | Confirme seu e-mail pelo link que enviamos antes de entrar. | 401 |
+| E-mail já cadastrado             | Já existe uma conta com este e-mail.                     | 400    |
+| CPF já cadastrado                | Já existe uma conta com este CPF.                        | 400    |
+| Muitas tentativas                | Muitas tentativas seguidas. Aguarde um minuto e tente de novo. | 429 |
+| Sem internet                     | Não foi possível conectar ao servidor. Verifique sua internet. | 0 |
+| Regra do banco (status etc.)     | a própria mensagem do banco, em português                | 400    |
+| Sessão expirada                  | Sua sessão expirou. Entre novamente.                     | 401    |
 
-Resposta `200`: o `user` atualizado (mesmo formato do login).
+## Escopo desta versão
 
-## Filtros extras de `GET /services`
-
-Além de `search`, `category`, `womenOnly` e `limit`, a tela Profissionais e o Perfil enviam:
-
-- `verifiedOnly=true`: só prestadores com identidade verificada.
-- `providerId=<id>`: serviços de um prestador ("Meus serviços").
-- `sort=rating|distance|price`: melhor avaliados (padrão), mais próximos ou menor preço.
+- Contratação demonstrativa: a solicitação é registrada, mas nenhum pagamento é processado.
+- App regional: não há cálculo de distância entre cliente e prestador.
+- Verificação de identidade feita manualmente pela equipe (ver "Verificação de identidade").
+- A avaliação do prestador já existe no banco (com cálculo automático da nota); a tela de
+  avaliação no app é um próximo passo.
