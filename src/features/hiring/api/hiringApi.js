@@ -40,9 +40,9 @@ function fromScheduledAt(value) {
 }
 
 /** O número do atendimento aparece como protocolo "OS-000123". */
-const toProtocol = (id) => `OS-${String(id).padStart(6, '0')}`
+export const toProtocol = (id) => `OS-${String(id).padStart(6, '0')}`
 
-function fromProtocol(requestId) {
+export function fromProtocol(requestId) {
   const id = Number(String(requestId).replace(/^OS-/i, ''))
   if (!Number.isInteger(id) || id <= 0) {
     throw new ApiError('Solicitação não encontrada.', { status: 404 })
@@ -78,6 +78,7 @@ async function toHireRequests(rows) {
       id: toProtocol(row.id),
       serviceId: String(row.prestador_servico_id),
       clientId: row.cliente_id,
+      providerId: row.prestador_id,
       clientName: namesById.get(row.cliente_id) ?? 'Cliente',
       status: row.status,
       date,

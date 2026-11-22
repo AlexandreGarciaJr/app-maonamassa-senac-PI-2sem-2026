@@ -13,19 +13,23 @@ function actionsFor(role, status) {
   if (role === 'prestador') {
     if (status === 'aguardando_prestador') return ['accept', 'decline']
     if (status === 'confirmado') return ['safety']
+    if (status === 'concluido') return ['review']
     return []
   }
   if (status === 'aguardando_prestador') return ['cancel']
   if (status === 'confirmado') return ['safety', 'complete', 'cancel']
+  if (status === 'concluido') return ['review']
   return []
 }
 
 /** Card de uma solicitação na Agenda. */
-export function RequestCard({ request, role, onAction, busy }) {
+export function RequestCard({ request, role, onAction, busy, reviewed }) {
   const [, month, day] = request.date.split('-')
   const status = HIRE_STATUS[request.status]
   const service = request.service
-  const actions = actionsFor(role, request.status)
+  const actions = actionsFor(role, request.status).filter(
+    (action) => !(action === 'review' && reviewed),
+  )
   const isInactive = !status?.active
 
   return (
@@ -85,6 +89,11 @@ export function RequestCard({ request, role, onAction, busy }) {
           {actions.includes('complete') && (
             <Button size="sm" variant="outline" onClick={() => onAction('concluido', request)}>
               Confirmar conclusão
+            </Button>
+          )}
+          {actions.includes('review') && (
+            <Button size="sm" variant="outline" onClick={() => onAction('review', request)}>
+              ⭐ Avaliar
             </Button>
           )}
           {actions.includes('decline') && (
