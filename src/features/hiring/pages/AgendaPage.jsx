@@ -1,11 +1,13 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
 import { CurvedHeader } from '@/components/layout/CurvedHeader'
 import { Alert, Button, EmptyState, Sheet, Skeleton } from '@/components/ui'
 import { ROUTES } from '@/constants/routes'
 import { useAuth } from '@/features/auth/hooks/useAuth'
 import { cn } from '@/lib/cn'
-import { hiringApi } from '../api/hiringApi'
+import { fromProtocol, hiringApi } from '../api/hiringApi'
+import { listMyReviewedIds } from '@/features/reviews/api/reviewsApi'
+import { ReviewSheet } from '@/features/reviews/components/ReviewSheet'
 import { RequestCard } from '../components/RequestCard'
 import { useMyHireRequests, useUpdateHireStatus } from '../hooks/useHiring'
 import { isActiveRequest } from '../status'
@@ -140,6 +142,16 @@ export default function AgendaPage() {
   const [safetyRequest, setSafetyRequest] = useState(null)
   const { data: requests, isPending, isError, refetch } = useMyHireRequests()
   const updateStatus = useUpdateHireStatus()
+  const [reviewRequest, setReviewRequest] = useState(null)
+  const [reviewedIds, setReviewedIds] = useState(() => new Set())
+
+  // Descobre quais atendimentos o usuário já avaliou (pra esconder o botão "Avaliar").
+  useEffect(() => {
+    if (!isAuthenticated) return
+    listMyReviewedIds()
+      .then((ids) => setReviewedIds(new Set(ids)))
+      .catch(() => {})
+  }, [isAuthenticated])
 
   const isProvider = user?.role === 'prestador'
 
@@ -167,6 +179,7 @@ export default function AgendaPage() {
 
   const handleAction = (action, request) => {
     if (action === 'safety') setSafetyRequest(request)
+    else if (action === 'review') setReviewRequest(request)
     else setPending({ status: action, request })
   }
 
@@ -233,7 +246,12 @@ export default function AgendaPage() {
           <ul key={tab} className="stagger space-y-3">
             {visible.map((request, index) => (
               <li key={request.id} style={{ '--i': index }}>
-                <RequestCard request={request} role={user.role} onAction={handleAction} />
+                <RequestCard
+                  request={request}
+                  role={user.role}
+                  onAction={handleAction}
+                  reviewed={reviewedIds.has(fromProtocol(request.id))}
+                />
               </li>
             ))}
           </ul>
@@ -272,10 +290,15 @@ export default function AgendaPage() {
       </Sheet>
 
       {/* A key reinicia o estado "avisado" a cada abertura. */}
-      <SafetySheet
-        key={safetyRequest?.id ?? 'none'}
-        request={safetyRequest}
-        onClose={() => setSafetyRequest(null)}
+      <ReviewSheet
+        key={reviewRequest?.id ?? 'none'}
+        request={reviewRequest}
+        role={user.role}
+        onClose={() => setReviewRequest(null)}
+        onDone={(request) => {
+          setReviewedIds((prev) => new Set(prev).add(fromProtocol(request.id)))
+          setReviewRequest(null)
+        }}
       />
     </>
   )
