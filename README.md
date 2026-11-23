@@ -88,6 +88,7 @@ VITE_SUPABASE_URL=https://rcwftcbaantadkhjexoc.supabase.co
 VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
 ```
 
+
 ## Publicação
 
 Importe o repositório na Vercel (preset Vite) e cadastre as mesmas variáveis do `.env.local` em
