@@ -7,7 +7,7 @@
 O Maonamassa é um aplicativo web mobile-first que conecta clientes a prestadores de serviço autônomos (elétrica, hidráulica, pintura, alvenaria, manutenção, montagem, limpeza e jardinagem). O foco é a **segurança** de quem contrata e de quem presta o serviço:
 
 - **Perfis verificados:** o prestador envia um documento no cadastro e recebe o selo de verificado.
-- **Preferência de gênero:** a cliente pode dar preferência a prestadoras, e a prestadora pode escolher atender somente mulheres.
+- **Preferência de gênero:** a cliente pode dar preferência a prestadoras, e a prestadora pode escolher atender preferencialmente mulheres.
 - **Botão de segurança:** durante a visita, avisa um contato de emergência e compartilha os dados do atendimento.
 - **Pagamento retido:** o valor só é liberado ao prestador depois que o cliente confirma a conclusão do serviço.
 
@@ -21,7 +21,7 @@ O Maonamassa é um aplicativo web mobile-first que conecta clientes a prestadore
 - [Modo demonstração](#modo-demonstração)
 - [Telas e rotas](#telas-e-rotas)
 - [Estrutura de pastas](#estrutura-de-pastas)
-- [Conexão com a API](#conexão-com-a-api)
+- [Conexão com o Supabase](#conexão-com-o-supabase)
 - [Testes e qualidade](#testes-e-qualidade)
 - [Publicação](#publicação)
 - [Documentação complementar](#documentação-complementar)
@@ -36,13 +36,16 @@ O Maonamassa é um aplicativo web mobile-first que conecta clientes a prestadore
 - Ver os detalhes do serviço: o que está incluído, preço, avaliações e perfil do prestador.
 - Contratar: data e período, endereço com CEP, detalhes, forma de pagamento (Pix ou cartão) e contato de emergência opcional.
 - Acompanhar as solicitações na Agenda, cancelar, confirmar a conclusão e usar o botão de segurança.
+- Avaliar o atendimento concluído, de 1 a 5 estrelas, com comentário.
 - Ajustar perfil e preferências (preferência por prestadoras).
 
 **Prestador**
-- Cadastro com especialidades, experiência, raio de atendimento, bairro, bio e envio de documento (JPG, PNG ou PDF até 5 MB).
-- Cadastrar serviços com categoria, título, descrição, preço (por serviço, hora ou visita) e itens incluídos.
+- Cadastro com CEP, bairro, bio e envio de documento (JPG, PNG ou PDF até 5 MB) para a verificação de identidade.
+- Cadastrar e editar serviços com área, tipo, título, descrição, valor e itens incluídos.
+- Ativar ou desativar cada serviço em "Meus serviços" (serviço inativo não aparece nas buscas).
 - Receber solicitações na Agenda e confirmar ou recusar.
-- Opção de atender somente mulheres.
+- Avaliar o cliente depois do atendimento concluído.
+- Opção de atender preferencialmente mulheres.
 
 **Ciclo de uma solicitação**
 
@@ -53,7 +56,7 @@ aguardando_prestador ──► confirmado ──► concluido
         └──► cancelado
 ```
 
-O prestador confirma ou recusa. O cliente pode cancelar antes da conclusão e marca como concluído, o que libera o pagamento.
+O prestador confirma ou recusa. O cliente pode cancelar antes da conclusão e marca como concluído, o que libera o pagamento. Depois da conclusão, cliente e prestador podem se avaliar, e a nota média do prestador é atualizada.
 
 ## Tecnologias
 
@@ -65,6 +68,7 @@ O prestador confirma ou recusa. O cliente pode cancelar antes da conclusão e ma
 | Dados e cache     | TanStack Query                                                 |
 | Testes            | Vitest (unitários), Playwright + axe-core (ponta a ponta e acessibilidade) |
 | Qualidade         | ESLint, Prettier                                               |
+| Backend           | Supabase (PostgreSQL, Auth e Storage)                          |
 | Hospedagem        | Vercel                                                         |
 
 ## Como rodar
@@ -93,7 +97,7 @@ Abra http://localhost:5173.
 
 ## Modo demonstração
 
-Sem nenhuma configuração, o app usa dados simulados (`src/mocks/`), no mesmo formato da API. Esses dados servem só para visualização. Com a API conectada, tudo passa a vir do uso real: cadastros, serviços publicados e contratações. Nesta versão a contratação é demonstrativa e nenhum pagamento é processado.
+Sem nenhuma configuração, o app usa dados simulados (`src/mocks/`), no mesmo formato dos dados do banco. Esses dados servem só para visualização. Com o Supabase conectado (`VITE_USE_MOCKS=false`), tudo passa a vir do uso real: cadastros, serviços publicados, contratações e avaliações. Nesta versão a contratação é demonstrativa e nenhum pagamento é processado.
 
 | Perfil    | E-mail                     | Senha    |
 | --------- | -------------------------- | -------- |
@@ -111,10 +115,11 @@ Essas contas existem só nos dados simulados.
 | `/servicos/:id`                       | Detalhe do serviço                                     | Público         |
 | `/servicos/:id/contratar`             | Contratação                                            | Logado          |
 | `/contratacoes/:id/confirmacao`       | Confirmação da contratação                             | Logado          |
-| `/agenda`                             | Agenda: solicitações e botão de segurança              | Público*        |
-| `/perfil`                             | Perfil e preferências                                  | Público*        |
+| `/agenda`                             | Agenda: solicitações, avaliações e botão de segurança  | Público*        |
+| `/perfil`                             | Perfil, preferências e meus serviços (prestador)       | Público*        |
 | `/login`, `/cadastro`                 | Login e cadastro (cliente ou prestador)                | Público         |
 | `/prestador/servicos/novo`            | Cadastro de serviço                                    | Prestador       |
+| `/prestador/servicos/:id/editar`      | Edição de serviço                                      | Prestador       |
 
 \* Sem login, a tela convida o usuário a entrar ou criar uma conta.
 
@@ -125,44 +130,53 @@ src/
 ├── app/          # App e definição das rotas
 ├── features/     # módulos por funcionalidade
 │   ├── auth/     #   login, cadastro, sessão e rotas protegidas
-│   ├── services/ #   início, lista, detalhe e cadastro de serviço
+│   ├── services/ #   início, lista, detalhe, cadastro e edição de serviço
 │   ├── hiring/   #   contratação, confirmação e agenda
-│   └── profile/  #   perfil e preferências
+│   ├── reviews/  #   avaliação de atendimentos
+│   └── profile/  #   perfil, preferências e meus serviços
 ├── components/   # layout e componentes visuais reutilizáveis
 ├── constants/    # categorias e rotas
 ├── config/       # leitura das variáveis de ambiente
 ├── hooks/        # hooks genéricos
-├── lib/          # cliente HTTP, máscaras, validações e formatação
+├── lib/          # cliente do Supabase, máscaras, validações e formatação
 ├── mocks/        # dados simulados do modo demonstração
 ├── pages/        # página não encontrada e página de erro
 ├── styles/       # CSS global (Tailwind)
 └── test/         # testes unitários e configuração
-docs/API.md       # contrato da API
+docs/API.md       # contrato do backend (Supabase)
+supabase/         # migrations do banco (tabelas, regras de acesso e funções)
 e2e/              # testes de ponta a ponta (Playwright)
 qa/               # plano de testes, bugs, evidências e relatórios
 ```
 
-Cada funcionalidade tem uma pasta `api/` com as chamadas ao servidor. No modo demonstração essas funções respondem com os dados de `src/mocks/`.
+Cada funcionalidade tem uma pasta `api/` com as chamadas ao Supabase. No modo demonstração essas funções respondem com os dados de `src/mocks/`, no mesmo formato.
 
-## Conexão com a API
+## Conexão com o Supabase
+
+O backend é o [Supabase](https://supabase.com): banco PostgreSQL, login (Supabase Auth) e arquivos (Supabase Storage). O app conversa direto com ele, sem servidor intermediário.
 
 1. Copie `.env.example` para `.env.local`.
-2. Ajuste as variáveis:
+2. Preencha as variáveis (em **Project Settings > API Keys** no painel do Supabase):
 
 ```env
-VITE_API_URL=https://endereco-da-api/api
 VITE_USE_MOCKS=false
+VITE_SUPABASE_URL=https://SEU-PROJETO.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
 ```
 
-3. Rode `npm run test:all` para conferir os fluxos com a API real.
+A chave publicável pode ficar no app, porque quem protege os dados são as regras de acesso do banco. A chave secreta (`sb_secret_...`) nunca vai para o app nem para o repositório.
 
-O contrato completo (endpoints, formatos, status e regras de permissão) está em [`docs/API.md`](docs/API.md). Principais regras:
+O banco é criado pelos scripts de [`supabase/migrations`](supabase/README.md), que rodam em ordem. O diagrama está em [`diagrama_db_maonamassa.png`](diagrama_db_maonamassa.png). Principais regras garantidas pelo próprio banco:
 
-- Rotas autenticadas recebem `Authorization: Bearer <token>`. Uma resposta `401` encerra a sessão no app.
-- Erros respondem com o status HTTP adequado e corpo `{ "message": "texto para o usuário" }`.
-- Só o cliente dono e o prestador do serviço podem ver uma solicitação.
+- Cada pessoa só vê e altera o que é dela ou os atendimentos de que participa (Row Level Security).
+- Só o prestador confirma ou recusa um atendimento; só o cliente cancela ou conclui.
 - E-mail e CPF são únicos no cadastro.
-- A distância (`distanceKm`) é calculada pela API a partir da localização do usuário.
+- A nota média e o número de serviços concluídos do prestador são atualizados sozinhos a cada avaliação e conclusão.
+- Os documentos dos prestadores ficam numa pasta privada, e cada um só envia e lê os seus.
+
+Para a demonstração, desligue **Confirm email** em **Authentication > Sign In / Providers > Email**, para a conta funcionar logo após o cadastro. A verificação de identidade é manual: no **Table Editor**, mude `status_verificacao` do usuário para `verificado`.
+
+Detalhes em [`supabase/README.md`](supabase/README.md) e [`docs/API.md`](docs/API.md).
 
 ## Testes e qualidade
 
@@ -180,11 +194,11 @@ Resultados:
 - **Segurança:** sem XSS, sem segredos no build e 0 vulnerabilidades nas dependências.
 - **Acessibilidade:** texto sobre fundo claro dentro do contraste mínimo. Ressalva: texto branco sobre o coral `#E85D5D` fica em 3,4:1, mantido para preservar a identidade visual.
 
-Pontos em aberto: testar no Safari/iOS, configurar cabeçalhos de segurança no deploy e, com a API real, guardar o token em cookie `HttpOnly` em vez de `localStorage`.
+Pontos em aberto: configurar cabeçalhos de segurança no deploy e guardar a sessão em cookie `HttpOnly` em vez de `localStorage`.
 
 ## Publicação
 
-Importe o repositório na [Vercel](https://vercel.com) com o preset **Vite**. O `vercel.json` já redireciona todas as rotas para o `index.html`, então os links diretos (por exemplo `/servicos/s3`) funcionam. Para usar a API real, configure `VITE_API_URL` e `VITE_USE_MOCKS` nas variáveis de ambiente do projeto.
+Importe o repositório na [Vercel](https://vercel.com) com o preset **Vite**. O `vercel.json` já redireciona todas as rotas para o `index.html`, então os links diretos (por exemplo `/servicos/s3`) funcionam. Para usar o Supabase, cadastre `VITE_USE_MOCKS`, `VITE_SUPABASE_URL` e `VITE_SUPABASE_PUBLISHABLE_KEY` em **Settings > Environment Variables** do projeto na Vercel.
 
 Depois de publicar, siga o roteiro de *smoke* do [relatório de QA](qa/RELATORIO-QA.md#smoke-pós-deploy-quando-publicar).
 
@@ -192,7 +206,8 @@ Depois de publicar, siga o roteiro de *smoke* do [relatório de QA](qa/RELATORIO
 
 | Documento                                                              | Conteúdo                                       |
 | ---------------------------------------------------------------------- | ---------------------------------------------- |
-| [`docs/API.md`](docs/API.md)                                           | Contrato da API                                |
+| [`docs/API.md`](docs/API.md)                                           | Contrato do backend (Supabase)                 |
+| [`supabase/README.md`](supabase/README.md)                             | Banco, regras de acesso e migrations           |
 | [`qa/RELATORIO-QA.md`](qa/RELATORIO-QA.md)                             | Relatório de QA                                |
 | [`qa/PLANO-DE-TESTES.md`](qa/PLANO-DE-TESTES.md)                       | Plano de testes                                |
 | [`qa/RELATORIO-NAO-FUNCIONAL.md`](qa/RELATORIO-NAO-FUNCIONAL.md)       | Acessibilidade, performance e segurança        |
@@ -205,15 +220,15 @@ O Maonamassa responde a um problema concreto: a falta de segurança e de confian
 
 ### Entregas
 
-A aplicação está publicada e cobre todo o percurso do usuário: busca, comparação de profissionais, contratação, acompanhamento na agenda e gestão do perfil, para clientes e para prestadores. A qualidade foi verificada com 39 testes unitários e 15 testes de ponta a ponta. Os dez fluxos críticos foram aprovados e, dos oito defeitos encontrados, sete foram corrigidos. A verificação incluiu ainda acessibilidade, desempenho e segurança.
+A aplicação está publicada e cobre todo o percurso do usuário: busca, comparação de profissionais, contratação, acompanhamento na agenda e gestão do perfil, para clientes e para prestadores. A qualidade foi verificada com 39 testes unitários e 15 testes de ponta a ponta. Os dez fluxos críticos foram aprovados e, dos oito defeitos encontrados, sete foram corrigidos. A verificação incluiu ainda acessibilidade, desempenho e segurança. A aplicação também está integrada ao Supabase, que cuida do banco de dados, do login e das regras de acesso, e foi testada no Safari, sem problemas encontrados.
 
 ### Dificuldades
 
-O principal desafio técnico foi desenvolver e testar a interface antes de a API existir. A solução foi definir um contrato de API documentado e um modo demonstração com dados simulados no mesmo formato. Com isso, as telas funcionam e são testadas de ponta a ponta, e a conexão com a API real se resume a trocar uma configuração.
+O principal desafio técnico foi desenvolver e testar a interface antes de o banco de dados existir. A solução foi definir um contrato documentado e um modo demonstração com dados simulados no mesmo formato. Com isso, as telas foram construídas e testadas de ponta a ponta em paralelo ao backend, e a integração com o Supabase aconteceu sem refazer as telas: cada módulo tem uma versão real e uma de demonstração, escolhidas por configuração.
 
 ### Próximos passos
 
-- Conectar a aplicação à API real e ao banco de dados.
-- Implementar o processamento real de pagamentos e o envio efetivo de alertas pelo botão de segurança.
-- Testar a aplicação no Safari/iOS.
-- Reforçar a segurança da publicação com cabeçalhos HTTP e o armazenamento da sessão em cookies protegidos.
+Para evoluir o Maonamassa de projeto acadêmico para produto:
+
+- Integrar um meio de pagamento real e o envio efetivo de alertas pelo botão de segurança.
+- Reforçar a segurança da publicação, com cabeçalhos HTTP e a sessão em cookies protegidos.
