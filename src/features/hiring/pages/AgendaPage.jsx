@@ -73,7 +73,7 @@ function Tabs({ value, onChange, counts }) {
   )
 }
 
-/** Botão de segurança (diferencial do Maonamassa). Nesta fase é demonstrativo. */
+/** Botão de segurança: registra o alerta e mostra o contato de confiança. */
 function SafetySheet({ request, onClose }) {
   const [sent, setSent] = useState(false)
   const [sending, setSending] = useState(false)
@@ -290,6 +290,12 @@ export default function AgendaPage() {
       </Sheet>
 
       {/* A key reinicia o estado "avisado" a cada abertura. */}
+      <SafetySheet
+        key={safetyRequest?.id ?? 'none'}
+        request={safetyRequest}
+        onClose={() => setSafetyRequest(null)}
+      />
+
       <ReviewSheet
         key={reviewRequest?.id ?? 'none'}
         request={reviewRequest}
