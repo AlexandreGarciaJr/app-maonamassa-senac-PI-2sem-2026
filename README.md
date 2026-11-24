@@ -2,7 +2,9 @@
 
 > Encontre prestadores de serviço verificados perto de você, com segurança.
 
-**Demonstração:** https://app-maonamassa.vercel.app
+**Link do MVP:** https://app-maonamassa.vercel.app
+
+**Vídeo de Demonstração:** https://app-maonamassa.vercel.app
 
 O Maonamassa é um aplicativo web mobile-first que conecta clientes a prestadores de serviço autônomos (elétrica, hidráulica, pintura, alvenaria, manutenção, montagem, limpeza e jardinagem). O foco é a **segurança** de quem contrata e de quem presta o serviço:
 
@@ -20,6 +22,7 @@ O Maonamassa é um aplicativo web mobile-first que conecta clientes a prestadore
 - [Como rodar](#como-rodar)
 - [Modo demonstração](#modo-demonstração)
 - [Telas e rotas](#telas-e-rotas)
+- [Protótipo](#protótipo)
 - [Estrutura de pastas](#estrutura-de-pastas)
 - [Conexão com o Supabase](#conexão-com-o-supabase)
 - [Testes e qualidade](#testes-e-qualidade)
@@ -123,6 +126,52 @@ Essas contas existem só nos dados simulados.
 
 \* Sem login, a tela convida o usuário a entrar ou criar uma conta.
 
+## Protótipo
+
+O protótipo de alta fidelidade do **Maonamassa** foi feito pela nossa equipe no **Figma**, no formato de celular. Ele simula a experiência completa do app antes e durante o desenvolvimento.
+
+🔗 **[Abrir o protótipo navegável no Figma](https://www.figma.com/proto/t1SZZoog0Hep9KIEHlJDTe/Maonamassa-%E2%80%93-Prot%C3%B3tipo--PI-Senac-?node-id=25-155&starting-point-node-id=25%3A155)**
+
+### Objetivo
+
+Antes de escrever código, queríamos validar a navegação, a hierarquia das informações e os principais fluxos do app. O protótipo serviu de referência visual para o desenvolvimento e ajudou a alinhar as decisões dentro do grupo.
+
+### Telas
+
+O protótipo tem **11 telas** ligadas entre si:
+
+| # | Tela | O que mostra |
+|---|------|--------------|
+| 01 | **Início** | Busca, categorias (Eletricista, Encanador(a), Pintor(a), Montador(a), Diarista…), serviços em destaque e a seção "Sua segurança vem primeiro" |
+| 02 | **Serviços** | Lista de todos os serviços com busca, filtros ("Só mulheres", "Verificados"), ordenação por avaliação e distância até o profissional |
+| 03 | **Detalhe do serviço** | Valor, descrição, o que está incluso, dados do prestador (identidade verificada, nota, número de serviços, distância) e avaliações de clientes |
+| 04 | **Login** | Entrada com e-mail e senha, recuperação de senha e um **modo demonstração** com contas de cliente e de prestador |
+| 05 | **Cadastro** | Escolha entre "Sou Cliente" e "Sou Prestador", dados pessoais, validação de senha e aceite dos Termos de Uso e da Política de Privacidade (LGPD) |
+| 06 | **Contratar serviço** | Data e período, endereço com CEP, descrição do problema, forma de pagamento (Pix ou cartão) e contato de confiança opcional |
+| 07 | **Solicitação enviada** | Confirmação com número de protocolo (ordem de serviço), resumo do pedido e próximos passos |
+| 08 | **Agenda** | Contratações próximas e histórico, com status, botão de segurança, confirmação de conclusão e cancelamento |
+| 09 | **Perfil** | Dados do usuário, preferências de segurança, atalhos e saída da conta |
+| 10 | **Cadastrar serviço (prestador)** | Formulário para o prestador publicar um serviço: área, título, descrição, itens inclusos, valor e forma de cobrança |
+| 11 | **Página não encontrada** | Tela de erro 404 com opção de voltar ao início |
+
+### Fluxos principais
+
+- **Cliente:** Início → Serviços → Detalhe do serviço → Contratar serviço → Solicitação enviada → Agenda
+- **Prestador:** Login → Cadastrar serviço → serviço publicado na lista
+- **Conta:** Cadastro / Login → Perfil
+
+### Decisões de design
+
+- **Segurança em primeiro lugar:** perfis verificados, filtro opcional para ser atendida só por profissionais mulheres e um contato de confiança que pode ser avisado durante a visita (botão de segurança).
+- **Pagamento protegido:** o valor fica retido e só é liberado ao prestador depois que o cliente confirma que o serviço foi concluído.
+- **Transparência:** preço, itens inclusos, avaliações e distância aparecem antes da contratação.
+- **Navegação simples:** barra inferior com Home, Profissionais, Agenda e Perfil.
+- **Componentes reutilizáveis:** criamos uma página separada de componentes (ícones e emojis) para manter as telas com um visual consistente.
+
+### Ferramentas
+
+- **Figma:** design das telas, componentes e protótipo navegável
+
 ## Estrutura de pastas
 
 ```
@@ -161,7 +210,7 @@ O backend é o [Supabase](https://supabase.com): banco PostgreSQL, login (Supaba
 ```env
 VITE_USE_MOCKS=false
 VITE_SUPABASE_URL=https://rcwftcbaantadkhjexoc.supabase.co
-VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_JmjbjwlzB6Fgqz3vH11LUg_xl8iGj9-
+VITE_SUPABASE_PUBLISHABLE_KEY=********
 ```
 
 A chave publicável pode ficar no app, porque quem protege os dados são as regras de acesso do banco. A chave secreta (`sb_secret_...`) nunca vai para o app nem para o repositório.
@@ -232,3 +281,4 @@ Para evoluir o Maonamassa de projeto acadêmico para produto:
 
 - Integrar um meio de pagamento real e o envio efetivo de alertas pelo botão de segurança.
 - Reforçar a segurança da publicação, com cabeçalhos HTTP e a sessão em cookies protegidos.
+
