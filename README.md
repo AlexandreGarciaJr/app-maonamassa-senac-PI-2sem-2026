@@ -160,8 +160,8 @@ O backend é o [Supabase](https://supabase.com): banco PostgreSQL, login (Supaba
 
 ```env
 VITE_USE_MOCKS=false
-VITE_SUPABASE_URL=https://SEU-PROJETO.supabase.co
-VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
+VITE_SUPABASE_URL=https://rcwftcbaantadkhjexoc.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_JmjbjwlzB6Fgqz3vH11LUg_xl8iGj9-
 ```
 
 A chave publicável pode ficar no app, porque quem protege os dados são as regras de acesso do banco. A chave secreta (`sb_secret_...`) nunca vai para o app nem para o repositório.
