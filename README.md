@@ -2,7 +2,7 @@
 
 > Encontre prestadores de serviço verificados perto de você, com segurança.
 
-**Link do MVP:** https://app-maonamassa.vercel.app
+**Link do App MVP:** https://app-maonamassa.vercel.app
 
 **Vídeo de Demonstração:** https://youtu.be/XM8RXnVPDTU
 
