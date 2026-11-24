@@ -40,7 +40,7 @@
 
   body {
     @apply bg-canvas text-ink font-sans antialiased;
-    /* Textos digitados pelos usuários (títulos, nomes, endereços) nunca estouram a tela (BUG-002). */
+    /* Textos digitados pelos usuários (títulos, nomes, endereços) nunca estouram a tela. */
     overflow-wrap: anywhere;
   }
 

@@ -1,7 +1,4 @@
-/**
- * Prestadores de exemplo (fictícios), só para visualização.
- * Saem quando o backend e o banco de dados entrarem.
- */
+/** Prestadores de exemplo (fictícios), usados só no modo demonstração. */
 export const PROVIDERS = [
   {
     id: 'p1',

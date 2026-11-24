@@ -29,7 +29,7 @@ export function useCreateService() {
   const { user } = useAuth()
 
   return useMutation({
-    // O segundo argumento só é usado pelo mock; o backend real identifica o prestador pelo token.
+    // providerId é usado no modo demonstração; no Supabase o prestador vem da sessão.
     mutationFn: (data) => servicesApi.create(data, { providerId: user?.id }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: servicesKeys.all }),
   })

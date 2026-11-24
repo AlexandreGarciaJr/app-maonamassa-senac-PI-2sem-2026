@@ -1,7 +1,6 @@
 /**
- * Implementações simuladas das APIs. Cada objeto aqui tem exatamente a mesma
- * assinatura da API real correspondente (ver features/*\/api). Quando o backend
- * estiver pronto, basta definir VITE_USE_MOCKS=false.
+ * Implementações simuladas das APIs, usadas no modo demonstração (VITE_USE_MOCKS=true).
+ * Cada objeto tem a mesma assinatura da API real correspondente (features/*\/api).
  */
 import { HIRE_REQUESTS } from './data/hireRequests'
 import { PROVIDERS } from './data/providers'

@@ -58,10 +58,7 @@ export const clientRegisterSchema = z
   })
   .refine(passwordsMatch.check, passwordsMatch.options)
 
-/*
- * O cadastro de prestador é dividido em etapas. Cada etapa tem o próprio schema
- * para validar só os campos visíveis; a última valida o formulário inteiro.
- */
+/** Campos extras do cadastro de prestador. */
 const providerWorkShape = {
   cep: z.string().refine(isValidCep, 'CEP inválido.'),
   neighborhood: z.string().trim().min(2, 'Informe seu bairro.'),

@@ -2,8 +2,7 @@ import { ApiError } from '@/lib/http'
 import { jsonStorage } from '@/lib/storage'
 
 /**
- * Banco de dados falso, persistido no localStorage do navegador.
- * Existe só enquanto o backend não fica pronto (VITE_USE_MOCKS=true).
+ * Banco de dados do modo demonstração (VITE_USE_MOCKS=true), salvo no localStorage do navegador.
  */
 export function createCollection(name, seed = []) {
   const key = `mnm:mock:${name}`

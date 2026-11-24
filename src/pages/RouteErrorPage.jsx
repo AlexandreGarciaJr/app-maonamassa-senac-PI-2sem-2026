@@ -5,7 +5,7 @@ import NotFoundPage from './NotFoundPage'
 
 /**
  * Erro inesperado ao abrir uma rota (ex.: sem internet ao carregar o código da tela).
- * "Página não encontrada" fica só para endereço inexistente (BUG-003).
+ * "Página não encontrada" fica só para endereço inexistente.
  */
 export default function RouteErrorPage() {
   const error = useRouteError()

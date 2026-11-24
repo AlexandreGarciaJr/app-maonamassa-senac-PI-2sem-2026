@@ -246,7 +246,6 @@ export default function ProfilePage() {
             <InfoRow label="Telefone" value={user.phone} />
             <InfoRow label="Gênero" value={gender} />
           </dl>
-          {/* TODO(backend): edição de dados pessoais (PATCH /users/me) */}
         </Card>
 
         <SafetyPreferences user={user} />

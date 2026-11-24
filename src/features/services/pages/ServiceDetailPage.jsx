@@ -91,7 +91,7 @@ export default function ServiceDetailPage() {
   if (isPending) {
     return (
       <>
-        {/* Mesma altura mínima do cabeçalho final, para não deslocar a tela (BUG-007). */}
+        {/* Mesma altura mínima do cabeçalho final, para não deslocar a tela. */}
         <CurvedHeader
           emoji="⏳"
           title="Carregando..."

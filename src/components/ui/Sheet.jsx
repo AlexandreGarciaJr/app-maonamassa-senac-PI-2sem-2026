@@ -19,7 +19,7 @@ export function Sheet({ open, onClose, emoji, title, children }) {
 
   useEffect(() => {
     if (!open) return undefined
-    // Guarda quem abriu o painel para devolver o foco ao fechar (BUG-005).
+    // Guarda quem abriu o painel para devolver o foco ao fechar.
     const opener = document.activeElement
 
     const onKey = (event) => {

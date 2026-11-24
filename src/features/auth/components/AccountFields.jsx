@@ -83,7 +83,7 @@ export function PasswordFields({ form }) {
 export function TermsLabel() {
   return (
     <>
-      Li e aceito os {/* TODO: páginas de termos e privacidade */}
+      Li e aceito os{' '}
       <a href="#termos" className="text-primary-ink font-semibold underline">
         Termos de Uso
       </a>{' '}

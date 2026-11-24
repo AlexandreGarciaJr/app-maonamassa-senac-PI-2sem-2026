@@ -1,4 +1,4 @@
-/** Rotas do app em um único lugar. Use sempre estas funções em vez de strings soltas. */
+/** Rotas do app. */
 export const ROUTES = {
   home: '/',
   login: '/login',

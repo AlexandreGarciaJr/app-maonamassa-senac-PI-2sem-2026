@@ -1,7 +1,4 @@
-/**
- * Serviços de exemplo (fictícios), só para visualização.
- * Saem quando o backend e o banco de dados entrarem.
- */
+/** Serviços de exemplo (fictícios), usados só no modo demonstração. */
 export const SERVICES = [
   {
     id: 's1',

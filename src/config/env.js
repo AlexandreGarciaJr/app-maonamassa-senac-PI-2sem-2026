@@ -1,7 +1,4 @@
-/**
- * Variáveis de ambiente centralizadas.
- * Nunca leia import.meta.env direto nos componentes: use este módulo.
- */
+/** Variáveis de ambiente do app. */
 export const env = {
   apiUrl: import.meta.env.VITE_API_URL ?? 'http://localhost:8080/api',
   // Sem VITE_USE_MOCKS=false, o app roda com os dados de exemplo (modo demonstração).

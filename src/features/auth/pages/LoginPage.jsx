@@ -71,7 +71,6 @@ export default function LoginPage() {
           />
 
           <div className="flex justify-end">
-            {/* TODO(backend): fluxo de recuperação de senha */}
             <button
               type="button"
               className="text-primary-ink text-[13px] font-medium hover:underline"
