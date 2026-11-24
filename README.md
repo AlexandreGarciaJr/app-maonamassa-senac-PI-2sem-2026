@@ -4,7 +4,7 @@
 
 **Link do MVP:** https://app-maonamassa.vercel.app
 
-**Vídeo de Demonstração:** https://app-maonamassa.vercel.app
+**Vídeo de Demonstração:** https://youtu.be/XM8RXnVPDTU
 
 O Maonamassa é um aplicativo web mobile-first que conecta clientes a prestadores de serviço autônomos (elétrica, hidráulica, pintura, alvenaria, manutenção, montagem, limpeza e jardinagem). O foco é a **segurança** de quem contrata e de quem presta o serviço:
 
